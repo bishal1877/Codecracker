@@ -1,6 +1,8 @@
 import React from 'react'
 import SpotlightCard from '../Spotlight/Spotlight';
 import styles from"./home.module.css"
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Home = () => {
   const languages = [
@@ -11,13 +13,7 @@ const Home = () => {
       path: "/chat/javascript",
       desc: "Web development, Node.js, and frameworks.",
     },
-    {
-      name: "Python",
-      icon: "Py",
-      color: "bg-blue-600",
-      path: "/chat/python",
-      desc: "Data science, backend, and machine learning.",
-    },
+
     {
       name: "Java",
       icon: "Jv",
@@ -27,16 +23,17 @@ const Home = () => {
     },
     {
       name: "C++",
-      icon: "C++",
+      icon: "cpp",
       color: "bg-indigo-700",
       path: "/chat/cpp",
       desc: "System programming and game development.",
     },
+
     {
-      name: "Go",
-      icon: "Go",
+      name: "React",
+      icon: "react",
       color: "bg-cyan-500",
-      path: "/chat/go",
+      path: "/chat/react",
       desc: "Fast, compiled, and scalable cloud applications.",
     },
     {
@@ -46,21 +43,71 @@ const Home = () => {
       path: "/chat/rust",
       desc: "Performance, memory safety, and concurrency.",
     },
+    {
+      name: "Python",
+      icon: "Py",
+      color: "bg-blue-600",
+      path: "/chat/python",
+      desc: "Data science, backend, and machine learning.",
+    },
   ];
   return (
     <div style={{ color: "black" }} className={`${styles.grod}`}>
       {languages.map((lang) => {
         return (
-          <div key={lang.name} style={{display:"flex",justifyContent:"center"}} >
-            <SpotlightCard
-              className="custom-spotlight-card"
-              spotlightColor="rgba(255, 255, 220, 0)"
-            >
-              <div style={{ display: "flex", justifyContent: "center" ,fontSize:"1.9rem"}}>
-                <div>{lang.name}</div>
-              </div>
-              {lang.desc}
-            </SpotlightCard>
+          <div
+            key={lang.name}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Link href={`${lang.path}`} prefetch={false} >
+              <SpotlightCard
+                className="custom-spotlight-card"
+                spotlightColor="rgba(255, 255, 220, 0)"
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "min-content",
+                      width: "max-content",
+                      border: "1px solid gray",
+                      borderRadius: "50px",
+                      width: "max-content",
+                      height: "max-content",
+                      objectPosition: "center",
+                    }}
+                  >
+                    <Image
+                      src={`/${lang.icon}.jpg`}
+                      style={{ borderRadius: "50%" }}
+                      width={64}
+                      height={60}
+                      alt="lang"
+                    ></Image>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      fontSize: "1.9rem",
+                      marginTop: "3px",
+                    }}
+                  >
+                    <div>{lang.name}</div>
+                  </div>
+                  <div style={{ fontSize: "0.9rem" }}>{lang.desc}</div>
+                  <div>
+                    <button className={`${styles.sign}`} >Discuss Now</button>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </Link>
           </div>
         );
       })}

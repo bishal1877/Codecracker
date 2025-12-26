@@ -1,6 +1,6 @@
 /* Navbar.module.css */
 .navbar {
-    background-color: #9cdd71;
+    background-color: #f8fafc;
     /* Dark Gray */
     padding: 1rem 2rem;
     display: flex;
@@ -9,7 +9,7 @@
     position: sticky;
     top: 0;
     z-index: 3;
-    color: rgb(0, 0, 0);
+    color: #1e293b;
     width: 100%;
 
 }
@@ -23,8 +23,7 @@
 }
 
 .logo:hover {
-    color: white;
-    /* Indigo */
+text-shadow: 1px 2px rgb(139, 133, 133);
 }
 
 .navLinks {
@@ -32,7 +31,15 @@
     gap: 1.5rem;
     list-style: none;
 }
-
+.sign
+{
+      background-color: rgb(30, 41, 59);
+  color: rgb(248, 250, 252);
+  border: 1px solid rgb(248, 250, 252);
+  padding: 5px 10px;
+  border-radius: 30px; 
+  cursor: pointer;
+}
 .link {
     text-decoration: none;
     color: #202021;
@@ -42,7 +49,7 @@
 }
 
 .link:hover {
-    color: white;
+text-shadow: 2px 2px #e88e5d;
 }
 
 .menuButton {
@@ -51,7 +58,6 @@
     background: none;
     border: none;
     color: white;
-    cursor: pointer;
 }
 
 /* Mobile View */
@@ -62,7 +68,6 @@
 
     .navLinks {
         display: none;
-        /* Hide standard links on mobile */
         flex-direction: column;
         position: absolute;
         top: 100%;
@@ -76,6 +81,5 @@
 
     .navLinksActive {
         display: flex;
-        /* Show when toggled */
     }
 }

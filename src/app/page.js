@@ -36,7 +36,7 @@ setTimeout(() => {
           display: "flex",
           justifyContent: "center",
           position: "relative",
-          zIndex: "2",
+          zIndex: "2"
         }}
       >
         <DecryptedText

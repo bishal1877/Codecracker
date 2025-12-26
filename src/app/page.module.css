@@ -9,11 +9,9 @@
   padding: 0;
 }
 .homc {
-    height: 550px;
+  padding: 30px 10px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 3;
 }

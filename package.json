@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.5",
     "@tailwindcss/postcss": "^4.1.18",
     "motion": "^12.23.26",
     "next": "16.0.10",

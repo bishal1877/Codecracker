@@ -2,16 +2,25 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./navbar.module.css";
+import Image from "next/image";
+ import {SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className={styles.navbar}>
-      <Link href="/" className={styles.logo}>
-        CodeCracker
-      </Link>
-
+      <div style={{ display: "flex", columnGap: "10px" }}>
+        <Image src="/logo.PNG" width={20} height={2} alt="logo" />
+        <Link href="/" className={styles.logo}>
+          CodeCracker
+        </Link>
+      </div>
       {/* Hamburger Icon for Mobile */}
       <button className={styles.menuButton} onClick={() => setIsOpen(!isOpen)}>
         <svg
@@ -39,6 +48,7 @@ const Navbar = () => {
             href="/"
             className={styles.link}
             onClick={() => setIsOpen(false)}
+            prefetch={false}
           >
             Home
           </Link>
@@ -48,6 +58,7 @@ const Navbar = () => {
             href="/about"
             className={styles.link}
             onClick={() => setIsOpen(false)}
+            prefetch={false}
           >
             About
           </Link>
@@ -57,6 +68,7 @@ const Navbar = () => {
             href="/forums"
             className={styles.link}
             onClick={() => setIsOpen(false)}
+            prefetch={false}
           >
             Forums
           </Link>
@@ -65,13 +77,23 @@ const Navbar = () => {
           <Link
             href="/contact"
             className={styles.link}
-            
             onClick={() => setIsOpen(false)}
+            prefetch={false}
           >
             Contact
           </Link>
         </li>
       </ul>
+      <div className={`${styles.navLinks}`}>
+        <SignedOut>
+          <SignInButton>
+            <button className={`${styles.sign}`}>Sign in</button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </nav>
   );
 };

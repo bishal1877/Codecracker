@@ -8,13 +8,11 @@ const styles = {
     whiteSpace: "pre-wrap",
     fontSize: '4.3rem',
     fontWeight: '900',
-    // The radial gradient from your reference image
     background: 'radial-gradient(circle, #FFF200 0%, #FFD700 50%, #FF8C00 100%)',
-    // Clipping magic
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
-    // Making original text transparent
     WebkitTextFillColor: 'transparent'
+    
   },
   srOnly: {
     position: "absolute",
