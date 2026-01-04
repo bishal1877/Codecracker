@@ -25,7 +25,7 @@ const Home = () => {
       name: "C++",
       icon: "cpp",
       color: "bg-indigo-700",
-      path: "/chat/cpp",
+      path: "/chat/c++",
       desc: "System programming and game development.",
     },
 
@@ -59,7 +59,7 @@ const Home = () => {
             key={lang.name}
             style={{ display: "flex", justifyContent: "center" }}
           >
-            <Link href={`${lang.path}`} prefetch={false} >
+            <Link href={`${lang.path}`} prefetch={false}>
               <SpotlightCard
                 className="custom-spotlight-card"
                 spotlightColor="rgba(255, 255, 220, 0)"
@@ -74,20 +74,20 @@ const Home = () => {
                 >
                   <div
                     style={{
-                      height: "min-content",
-                      width: "max-content",
                       border: "1px solid gray",
                       borderRadius: "50px",
-                      width: "max-content",
-                      height: "max-content",
                       objectPosition: "center",
                     }}
                   >
                     <Image
                       src={`/${lang.icon}.jpg`}
-                      style={{ borderRadius: "50%" }}
                       width={64}
-                      height={60}
+                      height={64}
+                      style={{
+                        borderRadius: "50%",
+                        // width: "auto",
+                        // height:"auto"
+                      }}
                       alt="lang"
                     ></Image>
                   </div>
@@ -103,7 +103,7 @@ const Home = () => {
                   </div>
                   <div style={{ fontSize: "0.9rem" }}>{lang.desc}</div>
                   <div>
-                    <button className={`${styles.sign}`} >Discuss Now</button>
+                    <button className={`${styles.sign}`}>Discuss Now</button>
                   </div>
                 </div>
               </SpotlightCard>

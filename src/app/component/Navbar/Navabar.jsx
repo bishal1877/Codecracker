@@ -15,8 +15,9 @@ const Navbar = () => {
 
   return (
     <nav className={styles.navbar}>
-      <div style={{ display: "flex", columnGap: "10px" }}>
-        <Image src="/logo.PNG" width={20} height={2} alt="logo" />
+      
+      <div style={{ display: "flex", columnGap: "10px" ,width:"min-content" }}>
+        <Image src="/logo.PNG" width={20} height={2} style={{height:"auto"}} alt="logo" />
         <Link href="/" className={styles.logo}>
           CodeCracker
         </Link>
@@ -84,7 +85,7 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <div className={`${styles.navLinks}`}>
+      <div className={`${styles.navLinks}`} style={{justifySelf:"end"}} >
         <SignedOut>
           <SignInButton>
             <button className={`${styles.sign}`}>Sign in</button>

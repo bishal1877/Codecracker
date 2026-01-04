@@ -14,7 +14,7 @@ setTimeout(() => {
     }, 2500);
 
   return (
-    <div style={{ position: "relative",height:"calc(100vh - 60.5px)" }}>
+    <div style={{ position: "relative",height:"calc(100vh - 73.5px)" }}>
       <div
         style={{
           width: "100%",

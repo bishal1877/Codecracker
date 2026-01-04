@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { StreamChat } from "stream-chat";
 import Navabar from "./component/Navbar/Navabar";
 import { ClerkProvider } from "@clerk/nextjs";
 
