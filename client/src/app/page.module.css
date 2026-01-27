@@ -1,0 +1,17 @@
+.page {
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  --button-secondary-border: #ebebeb;
+
+  font-family: var(--font-geist-sans);
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+}
+.homc {
+  padding: 30px 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

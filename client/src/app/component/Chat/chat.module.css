@@ -1,0 +1,67 @@
+.chat
+{
+display: flex;
+flex-direction: column;
+    height: 92%;
+    background-color:#efe7de;
+    color: black;
+}
+
+.chatinner
+{
+  height: 86%;  
+       padding: 18px;
+           border: 2px solid black;
+     border-top: 0px;
+     border-bottom: 0;
+   display: flex;
+
+flex-direction: column;  
+overflow: scroll;
+row-gap: 7px;
+}
+
+.chatinner::-webkit-scrollbar
+{
+    display: none;
+}
+
+.chatcompo
+{
+padding-top: 3px;
+padding-bottom: 2px;
+border-radius: 10px;
+padding-left: 5px;
+padding-right: 5px;
+max-width: 80%;
+}
+
+.inp
+{
+    height: 15%;
+    display: flex;
+    gap: 10px;
+        border: 2px solid black;
+        border-radius: 0px 0px 6px 6px;
+        padding: 0;
+        background-color: white;
+    }
+
+.input
+{
+    width: 97%;
+    height: 100%;
+    padding: 3px;
+        background-color: white;
+        color: black;
+        resize: none;
+        outline: 0;
+}
+
+.icon
+{
+height: 30px;
+cursor: pointer;
+padding: 4px;
+align-self: center;
+}
