@@ -10,7 +10,7 @@ app.use(express.json());
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://codecracker-8xc97yjt6-bbs-projects-6aced6f3.vercel.app/", 
+    origin: "https://codecracker-liard.vercel.app/", 
     methods: ["GET", "POST"],
     credentials: true
   },
