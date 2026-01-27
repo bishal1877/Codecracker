@@ -40,7 +40,7 @@ let myname=user?.firstName;
 useEffect(()=>{
 async function fetchmsg() {
   try {
-    const dat = await axios.get("https://codecracker-server-seven.vercel.app/msg", {
+    const dat = await axios.get("https://codecracker-ka2c.onrender.com/msg", {
       params: { room: room },
     });
     if (dat.data.success) {
@@ -51,7 +51,7 @@ async function fetchmsg() {
   }
 }
 fetchmsg();
- socket = io("https://codecracker-server-seven.vercel.app/");
+ socket = io("https://codecracker-ka2c.onrender.com");
 
 socket.emit('join',{room});
 
