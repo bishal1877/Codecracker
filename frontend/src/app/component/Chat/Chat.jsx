@@ -40,7 +40,7 @@ let myname=user?.firstName;
 useEffect(()=>{
 async function fetchmsg() {
   try {
-    const dat = await axios.get("http://localhost:4000/msg", {
+    const dat = await axios.get("https://codecracker-server-seven.vercel.app/msg", {
       params: { room: room },
     });
     if (dat.data.success) {
