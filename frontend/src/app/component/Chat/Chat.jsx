@@ -51,7 +51,7 @@ async function fetchmsg() {
   }
 }
 fetchmsg();
- socket = io("localhost:4000");
+ socket = io("https://codecracker-server-seven.vercel.app/");
 
 socket.emit('join',{room});
 
