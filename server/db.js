@@ -1,15 +1,20 @@
-import { Pool } from "pg";
-import  dotenv  from "dotenv";
+import pg from "pg";
+import dotenv from "dotenv";
 dotenv.config();
-const pool = new Pool({
+
+const { Pool } = pg;
+
+const client = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  max: 10,
+  idleTimeoutMillis: 30000,
 });
 
-pool.on("error", (err) => {
-  console.error("Unexpected error on idle client", err);
+client.on("error", (err) => {
+  console.error("Unexpected error on idle database client:", err.message);
 });
-const client = await pool.connect();
-
 
 export default client;
