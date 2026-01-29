@@ -22,7 +22,7 @@ const Header = (props) => {
         height={32}
         alt="dee"
       ></Image>{" "}
-      <p style={{alignSelf:"end", textDecoration:"underline" ,textDecorationThickness:"1.2px"}} > {lang} Forum</p>
+      <p style={{alignSelf:"center", textDecoration:"underline" ,textDecorationThickness:"1.2px"}} > {lang} Forum</p>
     </div>
   );
 };
