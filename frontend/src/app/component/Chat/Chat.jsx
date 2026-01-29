@@ -68,8 +68,9 @@ useEffect(()=>{
 
 socket.on('message',(msg)=>{
 setmg((prev)=>[...prev,msg]);
-});
 scrollToBottom();
+});
+
 myname=user?.firstName;
 return () => {
   socket.off();
