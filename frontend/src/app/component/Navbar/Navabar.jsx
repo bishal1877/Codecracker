@@ -1,99 +1,101 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./navbar.module.css";
 import Image from "next/image";
- import {SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const closeMenu = () => setIsOpen(false);
+
   return (
     <nav className={styles.navbar}>
-      
-      <div style={{ display: "flex", columnGap: "10px" ,width:"min-content" }}>
-        <Image src="/logo.PNG" width={20} height={2} style={{height:"auto"}} alt="logo" />
-        <Link href="/" className={styles.logo}>
-          CodeCracker
-        </Link>
-      </div>
-      {/* Hamburger Icon for Mobile */}
-      <button className={styles.menuButton} onClick={() => setIsOpen(!isOpen)}>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          {isOpen ? (
-            <path d="M18 6L6 18M6 6l12 12" /> // X
-          ) : (
-            <path d="M4 6h16M4 12h16M4 18h16" /> // Hamburger
-          )}
-        </svg>
-      </button>
+      <div className={styles.navinner}>
+        <div className={styles.logoContainer}>
+          <Image
+            src="/logo.PNG"
+            width={20}
+            height={20}
+            style={{ height: "auto" }}
+            alt="logo"
+          />
+          <Link href="/" className={styles.logo}>
+            CodeCracker
+          </Link>
+        </div>
 
-      {/* Navigation Links */}
-      <ul
-        className={`${styles.navLinks} ${isOpen ? styles.navLinksActive : ""}`}
-      >
-        <li>
-          <Link
-            href="/"
-            className={styles.link}
-            onClick={() => setIsOpen(false)}
-            prefetch={false}
+        {/* Mobile Hamburger Icon */}
+        <button
+          className={styles.menuButton}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
           >
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/about"
-            className={styles.link}
-            onClick={() => setIsOpen(false)}
-            prefetch={false}
-          >
-            About
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/forums"
-            className={styles.link}
-            onClick={() => setIsOpen(false)}
-            prefetch={false}
-          >
-            Forums
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/contact"
-            className={styles.link}
-            onClick={() => setIsOpen(false)}
-            prefetch={false}
-          >
-            Contact
-          </Link>
-        </li>
-      </ul>
-      <div className={`${styles.navLinks}`} style={{justifySelf:"end"}} >
-        <SignedOut>
-          <SignInButton>
-            <button className={`${styles.sign}`}>Sign in</button>
-          </SignInButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+            {isOpen ? (
+              <path d="M18 6L6 18M6 6l12 12" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+
+        {/* Links + Mobile Auth */}
+        <ul
+          className={`${styles.navLinks} ${isOpen ? styles.navLinksActive : ""}`}
+        >
+          <li>
+            <Link href="/" className={styles.link} onClick={closeMenu}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link href="/about" className={styles.link} onClick={closeMenu}>
+              About
+            </Link>
+          </li>
+          <li>
+            <Link href="/forums" className={styles.link} onClick={closeMenu}>
+              Forums
+            </Link>
+          </li>
+          <li>
+            <Link href="/contact" className={styles.link} onClick={closeMenu}>
+              Contact
+            </Link>
+          </li>
+
+          {/* This only shows inside the mobile menu */}
+          <li className={styles.mobileAuthItem}>
+            <SignedOut>
+              <SignInButton>
+                <button className={styles.sign}>Sign in</button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </li>
+        </ul>
+
+        {/* Desktop Auth Only */}
+        <div className={styles.desktopAuth}>
+          <SignedOut>
+            <SignInButton>
+              <button className={styles.sign}>Sign in</button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
     </nav>
   );
