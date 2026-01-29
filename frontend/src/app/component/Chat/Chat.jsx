@@ -63,12 +63,13 @@ return ()=>{
 const scrollToBottom = () => {
   messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
 };
-
+useEffect(() => {
+  scrollToBottom();
+}, [msgs]);
 useEffect(()=>{
 
 socket.on('message',(msg)=>{
 setmg((prev)=>[...prev,msg]);
-scrollToBottom();
 });
 
 myname=user?.firstName;
