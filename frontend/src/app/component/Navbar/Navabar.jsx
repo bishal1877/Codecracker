@@ -26,7 +26,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile Hamburger Icon */}
         <button
           className={styles.menuButton}
           onClick={() => setIsOpen(!isOpen)}
@@ -47,7 +46,6 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Links + Mobile Auth */}
         <ul
           className={`${styles.navLinks} ${isOpen ? styles.navLinksActive : ""}`}
         >
@@ -72,7 +70,6 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* This only shows inside the mobile menu */}
           <li className={styles.mobileAuthItem}>
             <SignedOut>
               <SignInButton>
@@ -85,11 +82,10 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* Desktop Auth Only */}
         <div className={styles.desktopAuth}>
           <SignedOut>
             <SignInButton>
-              <button className={styles.sign}>Sign in</button>
+              <button className={styles.sign} style={{cursor:"pointer"}}>Sign in</button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
