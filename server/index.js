@@ -39,8 +39,7 @@ io.to(room).emit('message',{name:naam,msg:text});
 
 app.get('/msg',async (req,res)=>{
   try{
- const result = await client.query("SELECT name,msg from mt where room= $1",[req.query.room]);
-
+ const result = await client.query("SELECT name,msg from mt where room= $1 order by time ",[req.query.room]);
 res.json({success:true,mess:result.rows});
   }catch{
 res.status(404).json({success:false});
