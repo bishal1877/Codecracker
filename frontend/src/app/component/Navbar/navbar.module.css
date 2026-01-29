@@ -1,85 +1,81 @@
-/* Navbar.module.css */
 .navbar {
-    background-color: #f8fafc;
-    /* Dark Gray */
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    color: #1e293b;
-    width: 100%;
-
+  width: 100%;
+  padding: 1rem 2rem;
+  background: #fff; 
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 900;
-    text-decoration: none;
-    color: rgb(0, 0, 0);
-    transition: color 0.3s;
+.navinner {
+  display: flex;
+  justify-content: space-between;
 }
 
-.logo:hover {
-text-shadow: 1px 2px rgb(139, 133, 133);
+.logoContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 2rem;
 }
 
 .navLinks {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
+  display: flex;
+  gap: 20px;
+  font-weight: bolder;
+  list-style: none;
+  align-items: center;
 }
-.sign
+
+.navLinks:hover
 {
-      background-color: rgb(30, 41, 59);
-  color: rgb(248, 250, 252);
-  border: 1px solid rgb(248, 250, 252);
-  padding: 5px 10px;
-  border-radius: 30px; 
-  cursor: pointer;
-}
-.link {
-    text-decoration: none;
-    color: #202021;
-    font-size: 1.2rem;
-    font-weight: 900;
-    transition: color 0.3s;
+outline: violet;
 }
 
-.link:hover {
-text-shadow: 2px 2px #e88e5d;
+.mobileAuthItem {
+  display: none;
 }
 
-.menuButton {
-    display: none;
-    /* Hidden on desktop */
-    background: none;
-    border: none;
-    color: white;
+.desktopAuth
+{
+    display: flex;
+    align-items: center;
 }
 
-/* Mobile View */
 @media (max-width: 768px) {
-    .menuButton {
-        display: block;
+    .navbar
+    {
+        height: max-content;
     }
+  .menuButton {
+    display: block;
+  }
 
-    .navLinks {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #1f2937;
-        padding: 1rem 0;
-        text-align: center;
-        gap: 1rem;
-    }
+  .desktopAuth {
+    display: none; 
+  }
 
-    .navLinksActive {
-        display: flex;
-    }
+  .navLinks {
+    display: none; 
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: #fff;
+    padding: 20px;
+  }
+
+  .navLinksActive {
+    display: flex; 
+    z-index: 9;
+  }
+
+  .mobileAuthItem {
+    display: block; 
+    margin-top: 10px;
+  }
+}
+
+@media (min-width: 769px) {
+  .menuButton {
+    display: none;
+  }
 }
