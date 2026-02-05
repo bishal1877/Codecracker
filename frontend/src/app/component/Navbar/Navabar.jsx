@@ -18,7 +18,7 @@ const Navbar = () => {
             src="/logo.PNG"
             width={20}
             height={20}
-            style={{ height: "auto" }}
+            style={{ height: "auto" ,width:"auto"}}
             alt="logo"
           />
           <Link href="/" className={styles.logo}>

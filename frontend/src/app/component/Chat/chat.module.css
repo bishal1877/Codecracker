@@ -69,6 +69,7 @@ max-width: 80%;
 .icon
 {
 height: 20px;
-padding: 4px;
+width: 30px;
 align-self: center;
+cursor: pointer;
 }

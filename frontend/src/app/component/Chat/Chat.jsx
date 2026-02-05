@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./chat.module.css";
 import { io } from "socket.io-client";
+  import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -12,7 +13,6 @@ const Chat = ({ room }) => {
   const messagesEndRef = useRef(null);
   const sendopt = useRef(null);
   const { user, isLoaded } = useUser();
-
   let [userdata, setuserdata] = useState({
     name: "",
     room: `${room}`,
@@ -21,17 +21,53 @@ const Chat = ({ room }) => {
 
   let [text, settext] = useState("");
 
-  let subm = (event) => {
+  let subm =  (event) => {
     event.preventDefault();
     let newmsg = {
       name: user?.firstName,
       msg: text,
       room: room,
     };
+let res;
+    const imgbhejo = async () => {
+      const formData = new FormData();
+      formData.append("uploadedfile", uploadedimg);
+     res= await axios.post("http://localhost:4000/upload",formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        if(!res.data.success)
+{          toast.error(`${res.data.message}`);
+  console.log('galat h')
+      }
+          else
+        {socket.emit("sendmsg", {
+          text,
+          naam: newmsg.name,
+          room,
+          url: user.imageUrl,
+          qimg: res.data.imageUrl,
+        });
+      toast.success('Query posted');
+      }
+    setuploaded(null);
+    
+  }
+  if (uploadedimg != null)
+    imgbhejo();
+  else
+    {socket.emit("sendmsg", {
+      text,
+      naam: newmsg.name,
+      room,
+      url: user.imageUrl,
 
-    socket.emit("sendmsg", { text, naam: newmsg.name, room });
-
-    settext("");
+      qimg: null,
+    });
+      toast.success("Query posted");}
+  settext("");
+    
   };
 
   const resp = null;
@@ -45,8 +81,10 @@ const Chat = ({ room }) => {
         if (dat.data.success) {
           setmg((prev) => [...prev, ...dat.data.mess]);
         }
+        else
+         toast.error(dat.data.message); 
       } catch (err) {
-        console.error("Fetch error:", err);
+      toast.error(err.message);
       }
     }
     fetchmsg();
@@ -77,17 +115,16 @@ const Chat = ({ room }) => {
       socket.off();
     };
   }, []);
-
-  useEffect(() => {
-    console.log(user);
-  }, [isLoaded]);
-
+const notify = () => toast("Wow so easy!");
   const fileuplod = (event) => {
-    setuploaded(URL.createObjectURL(event.target.files[0]));
+    setuploaded(event.target.files[0]);
   };
 
   return (
     <div className={`${styles.chat}`}>
+
+     <ToastContainer />
+
       <div className={`${styles.chatinner}`} ref={messagesEndRef}>
         {msgs.length == 0 ? (
           <div>
@@ -111,7 +148,7 @@ const Chat = ({ room }) => {
                   }}
                 >
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{ display: "flex", justifyContent: "space-between",gap:"5px" }}
                   >
                     {item.name != myname ? (
                       <Image
@@ -120,7 +157,7 @@ const Chat = ({ room }) => {
                         height={5}
                         className={`${styles.imag}`}
                         alt="dp"
-                        src={user?.hasImage ? `${user?.imageUrl}` : "/dp.png"}
+                        src={item.url!=null ? `${item.url}` : "/dp.png"}
                         objectFit="cover"
                       ></Image>
                     ) : (
@@ -158,7 +195,7 @@ const Chat = ({ room }) => {
             <label htmlFor="feel">
               {" "}
               <Image
-                src={uploadedimg == null ? "/upload.png" : uploadedimg}
+                src={uploadedimg == null ? "/upload.png" : URL.createObjectURL(uploadedimg)}
                 height={10}
                 width={20}
                 alt="file"
@@ -192,6 +229,7 @@ const Chat = ({ room }) => {
             height={40}
             alt="Picture of the author"
             onClick={subm}
+          style={!text?{display:"none"}:null}
             ref={sendopt}
           />
         </div>
