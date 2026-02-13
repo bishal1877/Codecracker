@@ -39,7 +39,7 @@ const Chat = ({ room }) => {
   useEffect(() => {
     async function fetchmsg() {
       try {
-        const dat = await axios.get("http://localhost:4000/msg", {
+        const dat = await axios.get("https://codecracker-ka2c.onrender.com/msg", {
           params: { room: room },
         });
         if (dat.data.success) {
@@ -50,7 +50,7 @@ const Chat = ({ room }) => {
       }
     }
     fetchmsg();
-    socket = io("http://localhost:4000");
+    socket = io("https://codecracker-ka2c.onrender.com");
 
     socket.emit("join", { room });
 
