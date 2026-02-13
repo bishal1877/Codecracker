@@ -1,0 +1,10 @@
+.reply
+{
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+.reply::-webkit-scrollbar
+{
+    display: none;
+}

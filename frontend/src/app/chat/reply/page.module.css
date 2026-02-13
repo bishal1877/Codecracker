@@ -1,0 +1,20 @@
+.replyouter
+{
+    background-color: #efe7de;
+    height: calc(100vh - 68px);
+}
+.replyouter::-webkit-scrollbar
+{
+    display: none;
+}
+.replydiv
+{
+    overflow: scroll;
+}
+.replydiv ::-webkit-scrollbar
+{
+    display: none;
+}
+
+
+

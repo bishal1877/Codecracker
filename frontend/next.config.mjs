@@ -2,7 +2,10 @@
 const nextConfig = {
   reactCompiler: true,
   images: {
-    remotePatterns: [new URL("https://img.clerk.com/**")],
+    remotePatterns: [
+      new URL("https://img.clerk.com/**"),
+      new URL("https://res.cloudinary.com/**"),
+    ],
   },
 };
 

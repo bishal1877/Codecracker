@@ -60,7 +60,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/forums" className={styles.link} onClick={closeMenu}>
+            <Link href="/" className={styles.link} onClick={closeMenu}>
               Forums
             </Link>
           </li>

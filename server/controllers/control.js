@@ -7,7 +7,7 @@ export const getmsg = async (req, res) => {
   try {
     console.log("aa gya");
     const result = await client.query(
-      "SELECT name,msg,url from mt where room= $1 order by time ",
+      "SELECT name,msg,url,id from mt where room= $1 order by time ",
       [req.query.room],
     );
     res.json({ success: true, mess: result.rows });
@@ -59,5 +59,33 @@ export const handlup = async (req, res) => {
     }
   } catch (error) {
   return   res.json({ success: false, msg: error.message });
+  }
+};
+
+
+export const givemsg = async (req, res) => {
+  try {
+    const id = req.query.id;
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "ID parameter required" });
+    }
+
+    const result = await client.query(
+      "SELECT name, msg, url, id, qimg FROM mt WHERE id = $1",
+      [id],
+    );
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Message not found" });
+    }
+
+    res.json({ success: true, msg: result.rows[0] });
+  } catch (e) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
