@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState,useRef } from "react";
+import React, {useContext, useEffect, useState,useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
 import { io } from "socket.io-client";
   import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { Context } from "../Context/Context";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -12,6 +13,7 @@ import Input from "../Input/Input";
 let socket;
 
 const Chat = ({ room }) => {
+  let pk=useContext(Context); 
   let [msgs, setmg] = useState([]);
   let [uploadedimg, setuploaded] = useState(null);
   const messagesEndRef = useRef(null);
@@ -46,7 +48,6 @@ let res;
         setProgress(progress + 10);
         if(!res.data.success)
 {       
-  console.log('pahla')
      toast.error(`${res.data.message}`);
       }
           else
@@ -107,9 +108,11 @@ let res;
     }
     fetchmsg();
     socket = io(`${process.env.NEXT_PUBLIC_URL}`);
-
     socket.emit("join", { room });
-
+pk.setstate((prev) => ({
+  ...prev,
+  socket: socket,
+}));
     return () => {
       socket.off();
     };
