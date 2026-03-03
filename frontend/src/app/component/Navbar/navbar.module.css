@@ -12,8 +12,9 @@
 
 .logoContainer {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
+  justify-content: center;
   font-size: 2rem;
 }
 

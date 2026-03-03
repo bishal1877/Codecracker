@@ -8,7 +8,7 @@ const Msg = ({ msgid }) => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-console.log(msgid)
+
   useEffect(() => {
     if (!msgid) {
       setLoading(false);
@@ -18,7 +18,7 @@ console.log(msgid)
     const fetchMessage = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:4000/msgbyid", {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msgbyid`, {
           params: { id: msgid },
           headers: {
             "Cache-Control": "no-store, no-cache",
@@ -51,7 +51,7 @@ console.log(msgid)
     <div
       style={{
         padding: "10px",
-        borderRadius: "0px 0px 8px 8px",
+        borderRadius: "0px 0px 0px 0px",
         marginBottom: "0px",
         border: "1px solid black",
         borderLeftWidth:"0px",

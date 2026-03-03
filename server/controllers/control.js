@@ -11,7 +11,8 @@ export const getmsg = async (req, res) => {
       [req.query.room],
     );
     res.json({ success: true, mess: result.rows });
-  } catch (e) {
+  } catch (error) {
+        console.log(error.message, " error ho gya ", error.code);
     res.status(404).json({ success: false, message: "Internal Server Error" });
   }
 };
@@ -89,3 +90,16 @@ export const givemsg = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+export const givereply=async (req,res)=>{
+  try {
+    let msgid = req.query.msgid;
+    const result = await client.query(
+      "SELECT * FROM reply WHERE mtid = $1 order by createdAt",
+      [msgid],
+    );
+    res.status(200).json({ success: true, replies:result.rows });
+  } catch (error) {
+    res.status(500).json({success:false, msg:`${error.message}`});
+  }
+  }

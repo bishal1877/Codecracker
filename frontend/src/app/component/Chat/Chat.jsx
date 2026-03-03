@@ -38,7 +38,7 @@ let res;
       const formData = new FormData();
       formData.append("uploadedfile", uploadedimg);
       setProgress(progress+10);        setProgress(progress + 20);
-     res= await axios.post("http://localhost:4000/upload",formData, {
+     res= await axios.post(`${process.env.NEXT_PUBLIC_URL}/upload`,formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -46,6 +46,7 @@ let res;
         setProgress(progress + 10);
         if(!res.data.success)
 {       
+  console.log('pahla')
      toast.error(`${res.data.message}`);
       }
           else
@@ -86,8 +87,8 @@ let res;
     async function fetchmsg() {
       try {
         setProgress(progress + 10);        setProgress(progress + 30);
-        const dat = await axios.get("http://localhost:4000/msg", {
-          params: { room: room ,t:Date.now()},
+        const dat = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msg`, {
+          params: { room: room },
         });
                 setProgress(progress + 30);
         if (dat.data.success) {
@@ -96,6 +97,7 @@ let res;
         else
          toast.error(dat.data.message); 
       } catch (err) {
+        console.log(err.message,' dusra')
       toast.error(err.message);
       }
       finally
@@ -104,7 +106,7 @@ let res;
       }
     }
     fetchmsg();
-    socket = io("http://localhost:4000");
+    socket = io(`${process.env.NEXT_PUBLIC_URL}`);
 
     socket.emit("join", { room });
 

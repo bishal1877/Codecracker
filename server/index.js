@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import multer from 'multer';
-import { getmsg,handlup ,givemsg} from "./controllers/control.js";
+import { getmsg,handlup ,givemsg,givereply} from "./controllers/control.js";
 import cors from'cors';
 import cloudinary from "cloudinary";
 const app = express();
@@ -48,6 +48,10 @@ io.to(room).emit('message',{name:naam,msg:text});
 app.get('/msg',getmsg);
 app.get('/msgbyid',givemsg);
 app.post('/upload',upload.single('uploadedfile'),handlup);
+app.get('/reply',givereply);
 
-httpServer.listen(4000);
+
+httpServer.listen(4000,()=>{
+  console.log('server started ho gya ');
+});
 
