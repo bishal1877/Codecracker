@@ -1,18 +1,24 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
 import { io } from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { Context } from "../Context/Context";
+import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import Input from "../Input/Input";
 let socket;
 
 const Chat = ({ room }) => {
+  let pk = useContext(Context);
   let [msgs, setmg] = useState([]);
+  let [uploadedimg, setuploaded] = useState(null);
   const messagesEndRef = useRef(null);
-  const sendopt = useRef(null);
+  const [progress, setProgress] = useState(0);
   const { user, isLoaded } = useUser();
-
   let [userdata, setuserdata] = useState({
     name: "",
     room: `${room}`,
@@ -22,15 +28,60 @@ const Chat = ({ room }) => {
   let [text, settext] = useState("");
 
   let subm = (event) => {
+    setProgress(progress + 20);
     event.preventDefault();
     let newmsg = {
       name: user?.firstName,
       msg: text,
       room: room,
     };
+    let res;
+    const imgbhejo = async () => {
+      const formData = new FormData();
+      formData.append("uploadedfile", uploadedimg);
+      setProgress(progress + 10);
+      setProgress(progress + 20);
+      res = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL}/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      setProgress(progress + 10);
+      if (!res.data.success) {
+        toast.error(`${res.data.message}`);
+      } else {
+        setProgress(progress + 10);
+        socket.emit("sendmsg", {
+          text,
+          naam: newmsg.name,
+          room,
+          url: user.imageUrl,
+          qimg: res.data.imageUrl,
+        });
+      }
+      setProgress(100);
+      setuploaded(null);
+    };
+    if (uploadedimg != null) {
+      setProgress(progress + 20);
+      imgbhejo();
+    } else {
+      setProgress(progress + 10);
+      setProgress(progress + 30);
+      socket.emit("sendmsg", {
+        text,
+        naam: newmsg.name,
+        room,
+        url: user.imageUrl,
 
-    socket.emit("sendmsg", { text, naam: newmsg.name, room });
-
+        qimg: null,
+      });
+      setProgress(100);
+    }
     settext("");
   };
 
@@ -39,27 +90,24 @@ const Chat = ({ room }) => {
   useEffect(() => {
     async function fetchmsg() {
       try {
-        const dat = await axios.get("http://localhost:4000/msg", {
+        setProgress(progress + 10);
+        setProgress(progress + 30);
+        const dat = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msg`, {
           params: { room: room },
         });
+        setProgress(progress + 30);
         if (dat.data.success) {
           setmg((prev) => [...prev, ...dat.data.mess]);
-        }
+        } else toast.error(dat.data.message);
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.log(err.message, " dusra");
+        toast.error(err.message);
+      } finally {
+        setProgress(100);
       }
     }
     fetchmsg();
-    socket = io("http://localhost:4000");
-
-    socket.emit("join", { room });
-
-    return () => {
-      socket.off();
-    };
   }, []);
-
-  let [uploadedimg, setuploaded] = useState(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
@@ -68,32 +116,36 @@ const Chat = ({ room }) => {
     scrollToBottom();
   }, [msgs]);
   useEffect(() => {
-    socket.on("message", (msg) => {
-      setmg((prev) => [...prev, msg]);
-    });
+    if (pk.state.socket) {
+      socket = pk.state.socket;
+      console.log(socket, "  in chat");
+      socket.emit("join", { room });
 
-    myname = user?.firstName;
-    return () => {
-      socket.off();
-    };
-  }, []);
+      socket.on("message", (msg) => {
+        setmg((prev) => [...prev, msg]);
+      });
 
-  useEffect(() => {
-    console.log(user);
-  }, [isLoaded]);
-
+      return () => {
+        socket.off("message");
+      };
+    }
+  }, [pk.state.socket, room]);
   const fileuplod = (event) => {
-    setuploaded(URL.createObjectURL(event.target.files[0]));
+    setuploaded(event.target.files[0]);
   };
 
   return (
     <div className={`${styles.chat}`}>
+      <LoadingBar
+        color="#f11946"
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
+      <ToastContainer />
+
       <div className={`${styles.chatinner}`} ref={messagesEndRef}>
         {msgs.length == 0 ? (
-          <div>
-            Loading messages...
-            {console.log(msgs)}
-          </div>
+          <div>Loading messages...</div>
         ) : (
           msgs.map((item, ind) => {
             return (
@@ -111,7 +163,11 @@ const Chat = ({ room }) => {
                   }}
                 >
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "5px",
+                    }}
                   >
                     {item.name != myname ? (
                       <Image
@@ -120,7 +176,7 @@ const Chat = ({ room }) => {
                         height={5}
                         className={`${styles.imag}`}
                         alt="dp"
-                        src={user?.hasImage ? `${user?.imageUrl}` : "/dp.png"}
+                        src={item.url != null ? `${item.url}` : "/dp.png"}
                         objectFit="cover"
                       ></Image>
                     ) : (
@@ -132,70 +188,22 @@ const Chat = ({ room }) => {
                       <></>
                     )}
                   </div>
-
-                  {`${item.msg.substring(0,120)}.....`}
+                  <Link href={`/chat/reply?msgid=${item.id}`}>
+                    {`${item.msg.substring(0, 120)}.....`}
+                  </Link>
                 </div>
               </div>
             );
           })
         )}
       </div>
-      <div className={`${styles.inp}`}>
-        <textarea
-          className={`${styles.input}`}
-          type="text"
-          placeholder="Enter the message..."
-          rows={4}
-          autoFocus
-          value={text}
-          onChange={(event) => settext(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key == "Enter") subm(event);
-          }}
-        />
-        <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-          <>
-            <label htmlFor="feel">
-              {" "}
-              <Image
-                src={uploadedimg == null ? "/upload.png" : uploadedimg}
-                height={10}
-                width={20}
-                alt="file"
-                style={{
-                  cursor: "pointer",
-                  padding: "1px",
-                  height: "55px",
-                  width: "30px",
-                  borderRadius: "3px",
-                  objectFit: "contain",
-                }}
-              ></Image>{" "}
-            </label>
-            <input
-              type="file"
-              id="feel"
-              onChange={fileuplod}
-              style={{
-                backgroundColor: "green",
-                cursor: "pointer",
-                width: "0px",
-                height: "0",
-              }}
-            />
-          </>
-
-          <Image
-            className={`${styles.icon}`}
-            src="/send-message.png"
-            width={40}
-            height={40}
-            alt="Picture of the author"
-            onClick={subm}
-            ref={sendopt}
-          />
-        </div>
-      </div>
+      <Input
+        subm={subm}
+        text={text}
+        fileuplod={fileuplod}
+        settext={settext}
+        uploadedimg={uploadedimg}
+      />
     </div>
   );
 };

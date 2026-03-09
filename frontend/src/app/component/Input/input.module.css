@@ -1,0 +1,22 @@
+.inp
+{
+    height: 15%;
+    display: flex;
+    gap: 5px;
+        border: 1px solid black;
+        border-radius: 0px 0px 6px 6px;
+        padding: 5px;
+        background-color: white;
+        width: 100%;
+    }
+
+.input
+{
+    width: 97%;
+    height: 100%;
+    padding: 3px;
+        background-color: white;
+        color: black;
+        resize: none;
+        outline: 0;
+}

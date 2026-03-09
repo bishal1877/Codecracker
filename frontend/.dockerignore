@@ -1,0 +1,18 @@
+# Dependency folders
+node_modules
+npm-debug.log
+
+# Build outputs
+dist
+.next
+build
+
+# Secrets and Configs
+.env
+.env.local
+.git
+.gitignore
+
+# OS Junk
+Thumbs.db
+.DS_Store

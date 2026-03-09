@@ -1,0 +1,25 @@
+{
+  "name": "codecracker",
+  "version": "1.0.0",
+  "description": "A full-stack real-time messaging platform with animated UI, secure file uploads, and production-ready deployment. Built with modern web technologies for seamless real-time communication.",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js --prefix server",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bishal1877/Codecracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bishal1877/Codecracker/issues"
+  },
+  "homepage": "https://github.com/bishal1877/Codecracker#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -21,7 +21,6 @@ flex-direction: column;
      border-top: 0px;
      border-bottom: 0;
    display: flex;
-
 flex-direction: column;  
 overflow: scroll;
 row-gap: 7px;
@@ -44,31 +43,10 @@ max-width: 80%;
   white-space: pre-wrap;
 }
 
-.inp
-{
-    height: 15%;
-    display: flex;
-    gap: 10px;
-        border: 2px solid black;
-        border-radius: 0px 0px 6px 6px;
-        padding: 0;
-        background-color: white;
-    }
-
-.input
-{
-    width: 97%;
-    height: 100%;
-    padding: 3px;
-        background-color: white;
-        color: black;
-        resize: none;
-        outline: 0;
-}
-
 .icon
 {
 height: 20px;
-padding: 4px;
+width: 30px;
 align-self: center;
+cursor: pointer;
 }

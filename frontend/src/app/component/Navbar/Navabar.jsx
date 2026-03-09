@@ -18,7 +18,7 @@ const Navbar = () => {
             src="/logo.PNG"
             width={20}
             height={20}
-            style={{ height: "auto" }}
+            style={{ height: "60%" ,width:"10%"}}
             alt="logo"
           />
           <Link href="/" className={styles.logo}>
@@ -60,7 +60,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/forums" className={styles.link} onClick={closeMenu}>
+            <Link href="/" className={styles.link} onClick={closeMenu}>
               Forums
             </Link>
           </li>

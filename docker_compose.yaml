@@ -1,0 +1,11 @@
+services:
+  
+  frontend:
+    image: frontend:1.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/home/app
+      - /home/app/node_modules
+    env_file: ./frontend/.env
+     
