@@ -125,15 +125,6 @@ cd server
 npm install
 ```
 
-Create a `.env` file in the `server` directory:
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/codecracker
-CLOUD_NAME=your_cloudinary_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-PORT=4000
-```
-
 Start the backend server:
 ```bash
 npm start
@@ -145,11 +136,6 @@ cd ../frontend
 npm install
 ```
 
-Create a `.env.local` file in the `frontend` directory:
-```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_key
-CLERK_SECRET_KEY=your_clerk_secret
-```
 
 Start the development server:
 ```bash
@@ -194,11 +180,6 @@ CREATE TABLE mt (
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_room ON mt(room);
-CREATE INDEX idx_time ON mt(time);
-```
-
----
 
 ## 🎨 Key Components
 
@@ -286,20 +267,6 @@ npm run build
 vercel deploy
 ```
 
-Set environment variables in Vercel dashboard:
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- `CLERK_SECRET_KEY`
-
-### Backend (Railway/Render/Heroku)
-Recommended platforms:
-- [Railway.app](https://railway.app) - Premium but recommended
-- [Render.com](https://render.com) - Free tier available
-- [Heroku](https://heroku.com) - Paid service
-
-Set environment variables on your hosting platform with the same `.env` variables.
-
----
-
 ## 📈 Future Enhancements
 
 - [ ] Message encryption/decryption
@@ -313,68 +280,3 @@ Set environment variables on your hosting platform with the same `.env` variable
 - [ ] Rate limiting on API endpoints
 - [ ] Message editing and deletion
 
----
-
-## 🐛 Troubleshooting
-
-### Socket.IO Connection Issues
-- Ensure backend is running on the correct port
-- Check CORS configuration matches frontend origin
-- Verify environment variables are set
-
-### Image Upload Fails
-- Verify Cloudinary credentials
-- Check file size limits in Multer configuration
-- Ensure API keys have upload permissions
-
-### Database Connection Error
-- Verify PostgreSQL is running
-- Check `DATABASE_URL` format is correct
-- Ensure database exists and user has permissions
-
----
-
-## 📝 Environment Variables Reference
-
-**Backend (.env)**
-```
-DATABASE_URL = PostgreSQL connection string
-CLOUD_NAME = Cloudinary cloud name
-API_KEY = Cloudinary API key
-API_SECRET = Cloudinary API secret
-PORT = Server port (default: 4000)
-```
-
-**Frontend (.env.local)**
-```
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = Public Clerk key
-CLERK_SECRET_KEY = Secret Clerk key
-```
-
----
-
-## 📜 License
-
-This project is licensed under the ISC License.
-
----
-
-## 👨‍💻 Author
-
-Created as a full-stack learning project showcasing modern web development practices.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to submit issues or pull requests.
-
----
-
-## 📞 Support
-
-For questions or issues, please open an issue on GitHub or contact the maintainer.
-
----
-
-**Built with ❤️ using Next.js, Node.js, and PostgreSQL**

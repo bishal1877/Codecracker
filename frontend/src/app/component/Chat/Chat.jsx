@@ -1,9 +1,9 @@
 "use client";
-import React, {useContext, useEffect, useState,useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
 import { io } from "socket.io-client";
-  import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { Context } from "../Context/Context";
 import Link from "next/link";
@@ -13,11 +13,11 @@ import Input from "../Input/Input";
 let socket;
 
 const Chat = ({ room }) => {
-  let pk=useContext(Context); 
+  let pk = useContext(Context);
   let [msgs, setmg] = useState([]);
   let [uploadedimg, setuploaded] = useState(null);
   const messagesEndRef = useRef(null);
-    const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
   const { user, isLoaded } = useUser();
   let [userdata, setuserdata] = useState({
     name: "",
@@ -27,33 +27,35 @@ const Chat = ({ room }) => {
 
   let [text, settext] = useState("");
 
-  let subm =  (event) => {
-    setProgress(progress+20);
+  let subm = (event) => {
+    setProgress(progress + 20);
     event.preventDefault();
     let newmsg = {
       name: user?.firstName,
       msg: text,
       room: room,
     };
-let res;
+    let res;
     const imgbhejo = async () => {
       const formData = new FormData();
       formData.append("uploadedfile", uploadedimg);
-      setProgress(progress+10);        setProgress(progress + 20);
-     res= await axios.post(`${process.env.NEXT_PUBLIC_URL}/upload`,formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        setProgress(progress + 10);
-        if(!res.data.success)
-{       
-     toast.error(`${res.data.message}`);
-      }
-          else
+      setProgress(progress + 10);
+      setProgress(progress + 20);
+      res = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL}/upload`,
+        formData,
         {
-          setProgress(progress + 10);
-          socket.emit("sendmsg", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      setProgress(progress + 10);
+      if (!res.data.success) {
+        toast.error(`${res.data.message}`);
+      } else {
+        setProgress(progress + 10);
+        socket.emit("sendmsg", {
           text,
           naam: newmsg.name,
           room,
@@ -61,25 +63,26 @@ let res;
           qimg: res.data.imageUrl,
         });
       }
-              setProgress(100);
-    setuploaded(null);
-  }
-  if (uploadedimg != null)
-    {setProgress(progress+20);
-      imgbhejo();}
-  else
-    {setProgress(progress + 10);        setProgress(progress + 30);
+      setProgress(100);
+      setuploaded(null);
+    };
+    if (uploadedimg != null) {
+      setProgress(progress + 20);
+      imgbhejo();
+    } else {
+      setProgress(progress + 10);
+      setProgress(progress + 30);
       socket.emit("sendmsg", {
-      text,
-      naam: newmsg.name,
-      room,
-      url: user.imageUrl,
+        text,
+        naam: newmsg.name,
+        room,
+        url: user.imageUrl,
 
-      qimg: null,
-    });
-    setProgress(100);}
-  settext("");
-    
+        qimg: null,
+      });
+      setProgress(100);
+    }
+    settext("");
   };
 
   const resp = null;
@@ -87,39 +90,24 @@ let res;
   useEffect(() => {
     async function fetchmsg() {
       try {
-        setProgress(progress + 10);        setProgress(progress + 30);
+        setProgress(progress + 10);
+        setProgress(progress + 30);
         const dat = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msg`, {
           params: { room: room },
         });
-                setProgress(progress + 30);
+        setProgress(progress + 30);
         if (dat.data.success) {
           setmg((prev) => [...prev, ...dat.data.mess]);
-        }
-        else
-         toast.error(dat.data.message); 
+        } else toast.error(dat.data.message);
       } catch (err) {
-        console.log(err.message,' dusra')
-      toast.error(err.message);
-      }
-      finally
-      {
+        console.log(err.message, " dusra");
+        toast.error(err.message);
+      } finally {
         setProgress(100);
       }
     }
     fetchmsg();
-    socket = io(`${process.env.NEXT_PUBLIC_URL}`);
-    socket.emit("join", { room });
-    return () => {
-      socket.off();
-    };
   }, []);
-useEffect(()=>{
-pk.setstate((prev) => ({
-  ...prev,
-  socket: socket,
-  name: myname,
-}));
-},[socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
@@ -128,15 +116,20 @@ pk.setstate((prev) => ({
     scrollToBottom();
   }, [msgs]);
   useEffect(() => {
-    socket.on("message", (msg) => {
-      setmg((prev) => [...prev, msg]);
-    });
+    if (pk.state.socket) {
+      socket = pk.state.socket;
+      console.log(socket, "  in chat");
+      socket.emit("join", { room });
 
-    myname = user?.firstName;
-    return () => {
-      socket.off();
-    };
-  }, []);
+      socket.on("message", (msg) => {
+        setmg((prev) => [...prev, msg]);
+      });
+
+      return () => {
+        socket.off("message");
+      };
+    }
+  }, [pk.state.socket, room]);
   const fileuplod = (event) => {
     setuploaded(event.target.files[0]);
   };
@@ -152,9 +145,7 @@ pk.setstate((prev) => ({
 
       <div className={`${styles.chatinner}`} ref={messagesEndRef}>
         {msgs.length == 0 ? (
-          <div>
-            Loading messages...
-          </div>
+          <div>Loading messages...</div>
         ) : (
           msgs.map((item, ind) => {
             return (
@@ -197,9 +188,8 @@ pk.setstate((prev) => ({
                       <></>
                     )}
                   </div>
-                  <Link
-                    href={`/chat/reply?msgid=${item.id}`}
-                  >{`${item.msg.substring(0, 120)}.....`}
+                  <Link href={`/chat/reply?msgid=${item.id}`}>
+                    {`${item.msg.substring(0, 120)}.....`}
                   </Link>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./reply.module.css";
 import axios from "axios";
@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Reply = ({ msgid, reply, setreply }) => {
   const [progress, setProgress] = useState(0);
-const messagesEndRef = useRef(null);
+
   useEffect(() => {
     const fetchReplies = async () => {
       try {
@@ -33,13 +33,6 @@ const messagesEndRef = useRef(null);
  fetchReplies();
   }, [msgid, setreply]);
 
-  const scrollToBottom = () => {
-    console.log('hua kya');
-    messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
-  };
-  useEffect(() => {
-    scrollToBottom();
-  }, [reply]);
 
   return (
     <div style={{ padding: "10px" }} className={styles.reply}>
@@ -49,7 +42,7 @@ const messagesEndRef = useRef(null);
         onLoaderFinished={() => setProgress(0)}
       />
       <ToastContainer />
-      <div ref={messagesEndRef}  className={styles.replyinner}>
+      <div className={styles.replyinner}>
         {reply && reply.length > 0 ? (
           <div>
             {reply.map((item, index) => (
