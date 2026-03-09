@@ -43,7 +43,6 @@ io.to(room).emit('message',{name:naam,msg:text});
 });
 
 socket.on("joinforreply", ({ msgid }) => {
-  console.log(msgid,'sock');
   socket.join(msgid);
 });
 
@@ -53,7 +52,6 @@ socket.on("sendreply", async ({ text, naam, id },callback) => {
       "insert into reply(msg,author,mtid) values ($1,$2,$3) returning * ",
       [text, naam, id],
     );
-console.log(resp.rows);
 if(resp.rows)
    {callback({success:true,mess:"send properly!"}); 
     io.to(id).emit("reply", {
