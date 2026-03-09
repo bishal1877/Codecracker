@@ -59,7 +59,7 @@ export const handlup = async (req, res) => {
      return res.json({ success: false, message: "No file provided" });
     }
   } catch (error) {
-  return   res.json({ success: false, msg: error.message });
+  return   res.json({ success: false, message: error.message });
   }
 };
 
