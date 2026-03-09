@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
 import { io } from "socket.io-client";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import axios from "axios";
 import { Context } from "../Context/Context";
 import Link from "next/link";
@@ -100,7 +100,6 @@ const Chat = ({ room }) => {
           setmg((prev) => [...prev, ...dat.data.mess]);
         } else toast.error(dat.data.message);
       } catch (err) {
-        console.log(err.message, " dusra");
         toast.error(err.message);
       } finally {
         setProgress(100);
@@ -118,7 +117,6 @@ const Chat = ({ room }) => {
   useEffect(() => {
     if (pk.state.socket) {
       socket = pk.state.socket;
-      console.log(socket, "  in chat");
       socket.emit("join", { room });
 
       socket.on("message", (msg) => {
@@ -141,7 +139,6 @@ const Chat = ({ room }) => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
       />
-      <ToastContainer />
 
       <div className={`${styles.chatinner}`} ref={messagesEndRef}>
         {msgs.length == 0 ? (

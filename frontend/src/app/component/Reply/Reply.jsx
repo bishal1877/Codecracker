@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./reply.module.css";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 
 const Reply = ({ msgid, reply, setreply }) => {
   const [progress, setProgress] = useState(0);
@@ -41,7 +41,6 @@ const Reply = ({ msgid, reply, setreply }) => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
       />
-      <ToastContainer />
       <div className={styles.replyinner}>
         {reply && reply.length > 0 ? (
           <div>

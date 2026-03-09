@@ -4,7 +4,7 @@ import styles from "./replycontain.module.css";
 import Msg from "@/app/component/Msg/Msg";
 import Reply from "@/app/component/Reply/Reply";
 import { useUser } from "@clerk/nextjs";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import Input from "@/app/component/Input/Input";
 import { Context } from "../Context/Context";
 
@@ -19,7 +19,6 @@ const messagesEndRef = useRef(null);
   let [uploadedimg, setuploaded] = useState(null);
   let [text, settext] = useState("");
   let pk = useContext(Context);
-  console.log(pk)
   let name = user?.firstName;
   let socket = pk.state.socket;
   let subm = (event) => {
@@ -59,7 +58,6 @@ const messagesEndRef = useRef(null);
     setuploaded(event.target.files[0]);
   };
   const scrollToBottom = () => {
-    console.log("hua kya");
     messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
   };
 
@@ -67,16 +65,11 @@ const messagesEndRef = useRef(null);
      scrollToBottom();
    }, [reply]);
   return (
-    <div className={`${styles.replycont}`}>
-      <ToastContainer />
-      <div style={{}}>
+    <div className={`${styles.replycont}`}>  
         <div className={`${styles.msgrep}`} ref={messagesEndRef}>
-          <div className={styles.msg}>
             <Msg msgid={search} />
-          </div>
           <Reply msgid={search} reply={reply} setreply={setreply} />
         </div>
-      </div>
       <Input
         subm={subm}
         text={text}

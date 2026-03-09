@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navabar from "./component/Navbar/Navabar";
 import { ClerkProvider } from "@clerk/nextjs";
-import { LevelContext } from "./component/Context/Context";
+import { ToastContainer } from "react-toastify";
 import Contextstate from "./component/Context/Contextstate";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +31,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <ToastContainer />
           <div>
             <Navabar />
           </div>

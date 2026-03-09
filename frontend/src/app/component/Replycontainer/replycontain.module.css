@@ -14,14 +14,14 @@ justify-content: space-between;
 }
 .msgrep
 {
-    display: flex;
-    flex-direction: column;
+   
     overflow: scroll;
 }
 
 .msg
 {
-    justify-self: flex-start;
+place-self: start;
+
 }
 .msgrep::-webkit-scrollbar
 {
