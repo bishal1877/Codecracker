@@ -17,7 +17,7 @@ const Input = ( {subm, text, fileuplod, settext, uploadedimg }) => {
         value={text}
         onChange={(event) => settext(event.target.value)}
         onKeyDown={(event) => {
-          if (event.key == "Enter") subm(event);
+          if (event.key == "Enter"&&(text||uploadedimg)) subm(event);
         }}
       />
       <div

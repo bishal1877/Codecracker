@@ -109,15 +109,17 @@ let res;
     fetchmsg();
     socket = io(`${process.env.NEXT_PUBLIC_URL}`);
     socket.emit("join", { room });
-pk.setstate((prev) => ({
-  ...prev,
-  socket: socket,
-}));
     return () => {
       socket.off();
     };
   }, []);
-
+useEffect(()=>{
+pk.setstate((prev) => ({
+  ...prev,
+  socket: socket,
+  name: myname,
+}));
+},[socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;

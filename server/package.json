@@ -7,7 +7,7 @@
   },
   "author": "",
   "license": "ISC",
-  "type": "module",
+"type": "module",
   "description": "",
   "dependencies": {
     "cloudinary": "^2.9.0",

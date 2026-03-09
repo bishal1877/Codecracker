@@ -21,7 +21,6 @@ flex-direction: column;
      border-top: 0px;
      border-bottom: 0;
    display: flex;
-
 flex-direction: column;  
 overflow: scroll;
 row-gap: 7px;
