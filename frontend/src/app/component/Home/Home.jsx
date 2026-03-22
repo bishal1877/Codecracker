@@ -84,9 +84,7 @@ const Home = () => {
                       width={64}
                       height={64}
                       style={{
-                        borderRadius: "50%",
-                        // width: "auto",
-                        // height:"auto"
+                        borderRadius: "50%"
                       }}
                       alt="lang"
                     ></Image>

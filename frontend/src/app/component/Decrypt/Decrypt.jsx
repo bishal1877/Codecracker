@@ -6,13 +6,12 @@ const styles = {
   wrapper: {
     display: "inline-block",
     whiteSpace: "pre-wrap",
-    fontSize: '4.3rem',
+    fontSize: '6vh',
     fontWeight: '900',
     background: 'radial-gradient(circle, #FFF200 0%, #FFD700 50%, #FF8C00 100%)',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
-    
   },
   srOnly: {
     position: "absolute",

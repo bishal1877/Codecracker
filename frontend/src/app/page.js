@@ -14,7 +14,13 @@ setTimeout(() => {
     }, 2500);
 
   return (
-    <div style={{ position: "relative",height:"calc(100vh - 73.5px)" }}>
+    <div
+      style={{
+        position: "relative",
+        minHeight: "calc(100vh - 70px)",
+        height: "auto",
+      }}
+    >
       <div
         style={{
           width: "100%",
@@ -35,8 +41,9 @@ setTimeout(() => {
         style={{
           display: "flex",
           justifyContent: "center",
+          alignItems:"center",
           position: "relative",
-          zIndex: "2"
+          zIndex: "2",
         }}
       >
         <DecryptedText

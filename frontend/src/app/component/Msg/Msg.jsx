@@ -19,11 +19,7 @@ const Msg = ({ msgid }) => {
       try {
         setLoading(true);
         const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msgbyid`, {
-          params: { id: msgid },
-          headers: {
-            "Cache-Control": "no-store, no-cache",
-            Accept: "application/json",
-          },
+          params: { id: msgid }
         });
         if (res.data.success) {
           setMessage(res.data.msg);
