@@ -13,6 +13,10 @@ flex-direction: column;
     display: inline;
     border-radius: 50%;
 }
+a:hover
+{
+    color: tomato;
+}
 .chatinner
 {
   height: 86%;  

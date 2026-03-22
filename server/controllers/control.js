@@ -68,7 +68,7 @@ export const handlup = async (req, res) => {
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
-};
+}; 
 
 export const givemsg = async (req, res) => {
   try {

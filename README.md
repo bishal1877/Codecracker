@@ -12,10 +12,11 @@ A full-stack real-time messaging platform with animated UI, secure file uploads,
 - **Room-Based Conversations** - Users can create/join specific chat rooms
 - **Image Sharing** - Upload and share images with secure Cloudinary integration
 - **User Authentication** - Secure login with Clerk authentication
-- **Message Persistence** - All messages stored in PostgreSQL database
+- **Message Persistence** - All messages stored in a serverless Neon PostgreSQL database
+- **High-Performance Caching** - Sub-50ms data retrieval using Upstash Redis
 - **Animated UI** - Galaxy particle effects and text decryption animations
 - **Responsive Design** - Works seamlessly on desktop and mobile devices
-- **Production Deployed** - Frontend hosted on Vercel with optimized performance
+- **CI/CD Pipeline** - Automated, zero-downtime deployments via Vercel and GitHub integration
 
 ---
 
@@ -45,6 +46,7 @@ A full-stack real-time messaging platform with animated UI, secure file uploads,
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Next.js 16** - React framework with server-side rendering
 - **React 19** - UI component library
 - **Socket.IO Client** - Real-time bidirectional communication
@@ -56,10 +58,12 @@ A full-stack real-time messaging platform with animated UI, secure file uploads,
 - **Axios** - HTTP client for API requests
 
 ### Backend
+
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
 - **Socket.IO** - WebSocket library for real-time communication
-- **PostgreSQL (pg)** - Relational database
+- **Neon** - Serverless PostgreSQL database
+- **Upstash** - Serverless Redis for high-performance caching
 - **Cloudinary** - Cloud image storage
 - **Multer** - File upload middleware
 - **CORS** - Cross-origin resource sharing
@@ -106,6 +110,7 @@ Codecracker/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v16+)
 - PostgreSQL database
 - Cloudinary account
@@ -114,30 +119,34 @@ Codecracker/
 ### Installation
 
 #### 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/Codecracker.git
 cd Codecracker
 ```
 
 #### 2. Backend Setup
+
 ```bash
 cd server
 npm install
 ```
 
 Start the backend server:
+
 ```bash
 npm start
 ```
 
 #### 3. Frontend Setup
+
 ```bash
 cd ../frontend
 npm install
 ```
 
-
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -150,26 +159,26 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 ### REST API
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/msg?room=roomId` | Fetch all messages in a room |
-| `GET` | `/msgbyid?id=messageId` | Fetch a specific message by ID |
-| `POST` | `/upload` | Upload image file (multipart/form-data) |
+| Method | Endpoint                | Description                             |
+| ------ | ----------------------- | --------------------------------------- |
+| `GET`  | `/msg?room=roomId`      | Fetch all messages in a room            |
+| `GET`  | `/msgbyid?id=messageId` | Fetch a specific message by ID          |
+| `POST` | `/upload`               | Upload image file (multipart/form-data) |
 
 ### WebSocket Events
 
-| Event | Payload | Direction |
-|-------|---------|-----------|
-| `join` | `{room: string}` | Client → Server |
-| `sendmsg` | `{text, naam, room, url, qimg}` | Client → Server |
-| `message` | `{name, msg}` | Server → Client |
-| `disconnect` | - | Client → Server |
+| Event        | Payload                         | Direction       |
+| ------------ | ------------------------------- | --------------- |
+| `join`       | `{room: string}`                | Client → Server |
+| `sendmsg`    | `{text, naam, room, url, qimg}` | Client → Server |
+| `message`    | `{name, msg}`                   | Server → Client |
+| `disconnect` | -                               | Client → Server |
 
 ---
 
 ## 🗄️ Database Schema
 
-```sql
+````sql
 CREATE TABLE mt (
   id SERIAL PRIMARY KEY,
   msg TEXT NOT NULL,
@@ -239,9 +248,10 @@ CREATE TABLE mt (
 ```bash
 cd server
 npm install --save-dev nodemon
-```
+````
 
 Update `package.json` scripts:
+
 ```json
 "scripts": {
   "dev": "nodemon index.js"
@@ -249,11 +259,13 @@ Update `package.json` scripts:
 ```
 
 ### Testing Socket.IO Locally
+
 Use Postman or browser console to test WebSocket connections:
+
 ```javascript
-const socket = io('http://localhost:4000');
-socket.emit('join', { room: 'test-room' });
-socket.on('message', (data) => console.log(data));
+const socket = io("http://localhost:4000");
+socket.emit("join", { room: "test-room" });
+socket.on("message", (data) => console.log(data));
 ```
 
 ---
@@ -261,6 +273,7 @@ socket.on('message', (data) => console.log(data));
 ## 🚢 Deployment
 
 ### Frontend (Vercel)
+
 ```bash
 cd frontend
 npm run build
@@ -279,4 +292,3 @@ vercel deploy
 - [ ] Dark/light theme toggle
 - [ ] Rate limiting on API endpoints
 - [ ] Message editing and deletion
-
