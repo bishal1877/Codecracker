@@ -38,7 +38,7 @@ export default function Call() {
         image: `https://getstream.io/random_svg/?id=oliver&name=${username}`,
       };
 
-      const resp = await axios.get("http://localhost:4000/token", {
+      const resp = await axios.get(`${process.env.NEXT_PUBLIC_URL}/token`, {
         params: { id: userid },
       });
       const token = resp.data.token;
