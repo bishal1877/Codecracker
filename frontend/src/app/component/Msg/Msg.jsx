@@ -4,11 +4,11 @@ import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const Msg = ({ msgid }) => {
+
+const Msg = ({ msgid ,callclick}) => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     if (!msgid) {
       setLoading(false);
@@ -50,9 +50,9 @@ const Msg = ({ msgid }) => {
         borderRadius: "0px 0px 0px 0px",
         marginBottom: "0px",
         border: "1px solid black",
-        borderLeftWidth:"0px",
-        borderRightWidth:"0px",
-        borderTop:"0px",
+        borderLeftWidth: "0px",
+        borderRightWidth: "0px",
+        borderTop: "0px",
         height: "maxcontent",
       }}
     >
@@ -64,20 +64,36 @@ const Msg = ({ msgid }) => {
           flexDirection: "column",
         }}
       >
-        <div style={{ fontWeight: "bold", color: "green" ,display:"flex",gap:"10px"}}>
+        <div
+          style={{
+            fontWeight: "bold",
+            color: "green",
+            display: "flex",
+            gap: "10px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{display:"flex"}}>
+            <Image
+              src={message.url != null ? `${message.url}` : "/dp.png"}
+              alt="User avatar"
+              width={40}
+              height={40}
+              style={{ borderRadius: "50%", width: "23px", height: "23px" }}
+            />
+            ~{message.name}
+          </div>
           <Image
-            src={message.url != null ? `${message.url}` : "/dp.png"}
-            alt="User avatar"
+            src="/video-button.png"
+            alt="vb"
             width={40}
-            height={40}
-            style={{ borderRadius: "50%", width: "23px", height: "23px" }}
-          />
-          ~{message.name}
+            height={50}
+            onClick={callclick}
+            style={{cursor:"pointer"}}
+          ></Image>
         </div>
         {message.qimg && (
-          <div
-            style={{ marginTop: "10px", width: "100%" }}
-          >
+          <div style={{ marginTop: "10px", width: "100%" }}>
             <Image
               src={message.qimg}
               alt="Message attachment"
@@ -86,9 +102,10 @@ const Msg = ({ msgid }) => {
               style={{
                 borderRadius: "4px",
                 width: "100%",
-                objectFit:"contain",
+                objectFit: "contain",
                 maxHeight: "30vh",
-                justifySelf:"center",borderRadius:"10px"
+                justifySelf: "center",
+                borderRadius: "10px",
               }}
             />
           </div>
@@ -101,7 +118,7 @@ const Msg = ({ msgid }) => {
             fontSize: "1.2rem",
           }}
         >
-          {message.msg} 
+          {message.msg}
         </div>
       </div>
     </div>

@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState, useContext,useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import styles from "./replycontain.module.css";
 import Msg from "@/app/component/Msg/Msg";
 import Reply from "@/app/component/Reply/Reply";
-import { useUser } from "@clerk/nextjs";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Input from "@/app/component/Input/Input";
 import { Context } from "../Context/Context";
 
@@ -13,13 +12,12 @@ const Replycontainer = ({ search }) => {
     if (obj.success) toast.success(obj.mess);
     else toast.error(obj.mess || obj.message);
   };
-const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null);
   let [reply, setreply] = useState([]);
-  const { user, isLoaded } = useUser();
   let [uploadedimg, setuploaded] = useState(null);
   let [text, settext] = useState("");
   let pk = useContext(Context);
-  let name = user?.firstName;
+  let name = pk.state.name;
   let socket = pk.state.socket;
   let subm = (event) => {
     event.preventDefault();
@@ -57,19 +55,18 @@ const messagesEndRef = useRef(null);
   const fileuplod = (event) => {
     setuploaded(event.target.files[0]);
   };
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollTop = messagesEndRef.current?.scrollHeight;
+
+  const callclick = () => {
+  let genmsg = `Click here to join the call with callid=${search}${Date.now()}`;
+    settext(genmsg);
   };
 
-   useEffect(() => {
-     scrollToBottom();
-   }, [reply]);
   return (
-    <div className={`${styles.replycont}`}>  
-        <div className={`${styles.msgrep}`} ref={messagesEndRef}>
-            <Msg msgid={search} />
-          <Reply msgid={search} reply={reply} setreply={setreply} />
-        </div>
+    <div className={`${styles.replycont}`}>
+      <div className={`${styles.msgrep}`} ref={messagesEndRef}>
+        <Msg msgid={search} callclick={callclick} />
+        <Reply msgid={search} reply={reply} setreply={setreply} />
+      </div>
       <Input
         subm={subm}
         text={text}

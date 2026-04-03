@@ -2,6 +2,8 @@ import cloudinary from "cloudinary";
 import { Readable } from "stream";
 import client from "../db.js";
 import redisclient from "../redis.js";
+import { StreamChat } from "stream-chat";
+
 export const getmsg = async (req, res) => {
   try {
     console.log("aa gya");
@@ -122,3 +124,17 @@ export const givereply = async (req, res) => {
     res.status(500).json({ success: false, msg: `${error.message}` });
   }
 };
+
+export const gettoken=async(req,res)=>{
+  try {
+const userid=req.query.id;
+const api_key = process.env.STREAM_API_KEY;;
+const api_secret = process.env.STREAM_SECRET_KEY;
+console.log(userid)
+   const serverClient = StreamChat.getInstance(api_key, api_secret);
+   const token = serverClient.createToken(userid); 
+   res.status(200).json({token:token});
+  } catch (error) {
+    res.status(404).json({msg:"error aa gya"});
+  } 
+}

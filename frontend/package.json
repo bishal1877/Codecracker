@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.5",
+    "@stream-io/video-react-sdk": "^1.34.1",
     "@tailwindcss/postcss": "^4.1.18",
     "axios": "^1.13.2",
     "motion": "^12.23.26",

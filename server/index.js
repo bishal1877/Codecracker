@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import multer from "multer";
-import { getmsg, handlup, givemsg, givereply } from "./controllers/control.js";
+import { getmsg, handlup, givemsg, givereply,gettoken } from "./controllers/control.js";
 import cors from "cors";
 import cloudinary from "cloudinary";
 import client from "./db.js";
@@ -80,6 +80,7 @@ app.get("/msg", getmsg);
 app.get("/msgbyid", givemsg);
 app.post("/upload", upload.single("uploadedfile"), handlup);
 app.get("/reply", givereply);
+app.get("/token",gettoken);
 
 httpServer.listen(4000, () => {
   console.log("server started ho gya ");

@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
-import { io } from "socket.io-client";
 import {  toast } from "react-toastify";
 import axios from "axios";
 import { Context } from "../Context/Context";
@@ -31,7 +30,7 @@ const Chat = ({ room }) => {
     setProgress(progress + 20);
     event.preventDefault();
     let newmsg = {
-      name: user?.firstName,
+      name: pk.state.name,
       msg: text,
       room: room,
     };
@@ -59,7 +58,7 @@ const Chat = ({ room }) => {
           text,
           naam: newmsg.name,
           room,
-          url: user.imageUrl,
+          url: pk.state.imageurl,
           qimg: res.data.imageUrl,
         });
       }
@@ -76,7 +75,7 @@ const Chat = ({ room }) => {
         text,
         naam: newmsg.name,
         room,
-        url: user.imageUrl,
+        url: pk.state.imageurl,
 
         qimg: null,
       });
@@ -86,7 +85,7 @@ const Chat = ({ room }) => {
   };
 
   const resp = null;
-  let myname = user?.firstName;
+  let myname = pk.state.name;
   useEffect(() => {
     async function fetchmsg() {
       try {
