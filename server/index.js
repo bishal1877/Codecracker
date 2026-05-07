@@ -3,18 +3,39 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import multer from "multer";
-import { getmsg, handlup, givemsg, givereply,gettoken } from "./controllers/control.js";
+import { clerkClient, clerkMiddleware, getAuth } from "@clerk/express";
+import {
+  getmsg,
+  handlup,
+  givemsg,
+  givereply,
+  gettoken,
+} from "./controllers/control.js";
 import cors from "cors";
+import { prisma } from "./lib/prisma.js";
 import cloudinary from "cloudinary";
 import client from "./db.js";
 import redisclient from "./redis.js";
-//import { createReadStream } from "streamifier";
 const app = express();
-
-app.use(cors());
-app.use(express.json());
-
 dotenv.config();
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://codecracker-liard.vercel.app/"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.use(express.json());
+  app.use(clerkMiddleware());
+    app.use( async (req, res, next) => {
+      const { isAuthenticated, userId } =  getAuth(req);
+      console.log(isAuthenticated)
+      if (!isAuthenticated) {
+        return res.status(401).json({ msg: "User not authenticated" });
+      }
+        const user = await clerkClient.users.getUser(userId)
+        next();
+    });
 const httpServer = createServer(app);
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -36,12 +57,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendmsg", async ({ text, naam, room, url, qimg }) => {
-    await client.query(
-      "insert into mt(msg,name,room,url,qimg) values ($1,$2,$3,$4,$5)",
-      [text, naam, room, url, qimg],
-    );
+    const user = await prisma.mt.create({
+      data: {
+        msg: text,
+        name: naam,
+        room:room,
+        url:url,
+        qimg:qimg
+      },
+    });
+    console.log(user,' bhej diye');
     await redisclient.del(room); // Invalidate the room messages cache
-
     io.to(room).emit("message", { name: naam, msg: text });
   });
 
@@ -51,19 +77,23 @@ io.on("connection", (socket) => {
 
   socket.on("sendreply", async ({ text, naam, id }, callback) => {
     try {
-      let resp = await client.query(
-        "insert into reply(msg,author,mtid) values ($1,$2,$3) returning * ",
-        [text, naam, id],
-      );
+      const user = await prisma.reply.create({
+        data: {
+          msg: text,
+          author: naam,
+          mtid: Number(id),
+        },
+      });
+
       await redisclient.del(`reply${id}`); // Invalidate the replies cache
 
-      if (resp.rows) {
+      if (user) {
         callback({ success: true, mess: "send properly!" });
         io.to(id).emit("reply", {
           author: naam,
           msg: text,
-          id: resp.rows[0].id,
-          createdat: resp.rows[0].createdat,
+          id: user.id,
+          createdat: user.createdat,
         });
       } else callback({ success: false, mess: "Failed!" });
     } catch (error) {
@@ -80,7 +110,10 @@ app.get("/msg", getmsg);
 app.get("/msgbyid", givemsg);
 app.post("/upload", upload.single("uploadedfile"), handlup);
 app.get("/reply", givereply);
-app.get("/token",gettoken);
+app.get("/token", gettoken);
+
+
+
 
 httpServer.listen(4000, () => {
   console.log("server started ho gya ");

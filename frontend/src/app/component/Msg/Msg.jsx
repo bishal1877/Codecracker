@@ -19,7 +19,8 @@ const Msg = ({ msgid ,callclick}) => {
       try {
         setLoading(true);
         const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msgbyid`, {
-          params: { id: msgid }
+          params: { id: msgid },
+          withCredentials: true,
         });
         if (res.data.success) {
           setMessage(res.data.msg);

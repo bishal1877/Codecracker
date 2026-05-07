@@ -3,23 +3,23 @@ import { Readable } from "stream";
 import client from "../db.js";
 import redisclient from "../redis.js";
 import { StreamChat } from "stream-chat";
+import { prisma } from "../lib/prisma.js";
 
 export const getmsg = async (req, res) => {
   try {
-    console.log("aa gya");
     const msg = await redisclient.get(req.query.room);
     if (msg) {
       return res.status(200).json({ success: true, mess: msg });
     }
-    const result = await client.query(
-      "SELECT name,msg,url,id from mt where room= $1 order by time ",
-      [req.query.room],
-    );
-    await redisclient.set(req.query.room, JSON.stringify(result.rows), {
+    console.log("aa gya1", req.query.room); 
+    const result = await prisma.mt.findMany({
+      where: { room: req.query.room },
+    });
+    await redisclient.set(req.query.room, JSON.stringify(result), {
       ex: 60 * 5,
       nx: true,
     });
-    res.json({ success: true, mess: result.rows });
+    res.json({ success: true, mess: result });
   } catch (error) {
     console.log(error.message, " error ho gya ", error.code);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -73,33 +73,34 @@ export const handlup = async (req, res) => {
 }; 
 
 export const givemsg = async (req, res) => {
-  try {
-    const id = req.query.id;
-    if (!id) {
+  try { 
+    const mid = req.query.id;
+    if (!mid) {
       return res
         .status(400)
         .json({ success: false, message: "ID parameter required" });
     }
-    const msg = await redisclient.get(id);
+    const msg = await redisclient.get(mid);
     if (msg) {
       return res.status(200).json({ success: true, msg: msg });
     }
-    const result = await client.query(
-      "SELECT name, msg, url, id, qimg FROM mt WHERE id = $1",
-      [id],
-    );
-    if (result.rows.length === 0) {
+    console.log(mid)
+    const result = await prisma.mt.findUnique({
+      where: { id: Number(mid) },
+    });
+    if (!result) {
       return res
         .status(404)
         .json({ success: false, message: "Message not found" });
     }
-    await redisclient.set(id, JSON.stringify(result.rows[0]), {
+    await redisclient.set(mid, JSON.stringify(result), {
       ex: 60 * 5,
       nx: true,
     });
 
-    res.json({ success: true, msg: result.rows[0] });
+    res.json({ success: true, msg: result });
   } catch (e) {
+    console.log(e.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
@@ -111,15 +112,14 @@ export const givereply = async (req, res) => {
     if (reply) {
       return res.status(200).json({ success: true, replies: reply });
     }
-    const result = await client.query(
-      "SELECT * FROM reply WHERE mtid = $1 order by createdAt",
-      [msgid],
-    );
-    await redisclient.set(`reply${msgid}`, JSON.stringify(result.rows), {
+    const result = await prisma.reply.findMany({
+      where: { mtid: Number(msgid) },
+    });
+    await redisclient.set(`reply${msgid}`, JSON.stringify(result), {
       ex: 60 * 5,
       nx: true,
     });
-    res.status(200).json({ success: true, replies: result.rows });
+    res.status(200).json({ success: true, replies: result });
   } catch (error) {
     res.status(500).json({ success: false, msg: `${error.message}` });
   }
@@ -135,6 +135,6 @@ console.log(userid)
    const token = serverClient.createToken(userid); 
    res.status(200).json({token:token});
   } catch (error) {
-    res.status(404).json({msg:"error aa gya"});
+    res.status(404).json({msg:`${error.message}`});
   } 
 }

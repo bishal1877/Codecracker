@@ -7,7 +7,6 @@ import {
   StreamTheme,
   StreamVideo,
   StreamVideoClient,
-  CancelCallButton,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import axios from "axios";
@@ -40,6 +39,7 @@ export default function Call() {
 
       const resp = await axios.get(`${process.env.NEXT_PUBLIC_URL}/token`, {
         params: { id: userid },
+        withCredentials:true
       });
       const token = resp.data.token;
 

@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model mt {
+  id    Int      @id @default(autoincrement())
+  msg   String
+  name  String
+  time  DateTime @default(dbgenerated("(now() AT TIME ZONE 'Asia/Kolkata'::text)")) @db.Timestamptz(6)
+  room  String
+  url   String?
+  qimg  String?
+  reply reply[]
+}
+
+model reply {
+  id        Int      @id @default(autoincrement())
+  msg       String?
+  mtid      Int
+  createdat DateTime @default(dbgenerated("(now() AT TIME ZONE 'Asia/Kolkata'::text)")) @db.Timestamp(6)
+  author    String   @default("none")
+  qimag     String?
+  mt        mt       @relation(fields: [mtid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "for")
+
+  @@index([mtid], map: "reply_ind")
+}

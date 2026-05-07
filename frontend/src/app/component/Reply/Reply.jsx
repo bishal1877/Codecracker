@@ -15,6 +15,7 @@ const Reply = ({ msgid, reply, setreply }) => {
         setProgress(30);
         const resp = await axios.get(`${process.env.NEXT_PUBLIC_URL}/reply`, {
           params: { msgid },
+          withCredentials: true,
         });
 
         setProgress(70);
