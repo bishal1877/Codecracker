@@ -20,7 +20,7 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://codecracker-liard.vercel.app/"],
+    origin: ["http://localhost:3000", "https://codecracker-liard.vercel.app"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
