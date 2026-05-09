@@ -93,7 +93,7 @@ const Chat = ({ room }) => {
         setProgress(progress + 30);
         const dat = await axios.get(`${process.env.NEXT_PUBLIC_URL}/msg`, {
           params: { room: room },
-          withCredentials: true
+          withCredentials: true,
         });
         setProgress(progress + 30);
         if (dat.data.success) {
