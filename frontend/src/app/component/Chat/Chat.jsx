@@ -46,6 +46,7 @@ const Chat = ({ room }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            
           },
         },
       );
@@ -186,7 +187,7 @@ const Chat = ({ room }) => {
                     )}
                   </div>
                   <Link href={`/chat/reply?msgid=${item.id}`}>
-                    {`${item.msg.substring(0, 120)}.....`}
+                    {`${item.msg.substring(0, 120)}`}
                   </Link>
                 </div>
               </div>

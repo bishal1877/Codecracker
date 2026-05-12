@@ -88,9 +88,9 @@ const Msg = ({ msgid ,callclick}) => {
             src="/video-button.png"
             alt="vb"
             width={40}
-            height={50}
+            height={30}
             onClick={callclick}
-            style={{cursor:"pointer"}}
+            style={{cursor:"pointer",width:"25px",height:"30px"}}
           ></Image>
         </div>
         {message.qimg && (

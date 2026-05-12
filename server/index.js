@@ -14,29 +14,40 @@ import {
 import cors from "cors";
 import { prisma } from "./lib/prisma.js";
 import cloudinary from "cloudinary";
-import client from "./db.js";
 import redisclient from "./redis.js";
 const app = express();
+// const session = require("express-session");
 dotenv.config();
+app.use(express.json());
+// app.use(
+//   session({
+//     secret: "your-secret",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       sameSite: "none",
+//       secure: process.env.NODE_ENV === "production", // true for HTTPS
+//     },
+//   }),
+// );
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://codecracker-liard.vercel.app"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
-);
-app.use(express.json());
+); 
   app.use(clerkMiddleware());
-    // app.use( async (req, res, next) => {
-    //   console.log(req);
-    //   const { isAuthenticated, userId } =  getAuth(req);
-    //   console.log(isAuthenticated)
-    //   if (!isAuthenticated) {
-    //     return res.status(401).json({ msg: "User not authenticated" });
-    //   }
-    //     const user = await clerkClient.users.getUser(userId)
-    //     next();
-    // });
+     app.use( async (req, res, next) => {
+       console.log(req.auth,' req', req.headers.cookie);
+       const { isAuthenticated, userId } =  getAuth(req);
+       console.log(isAuthenticated)
+       if (!isAuthenticated) {
+         return res.status(401).json({ msg: "User not authenticated" });
+       }
+         const user = await clerkClient.users.getUser(userId)
+         next();
+     }); 
 const httpServer = createServer(app);
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });

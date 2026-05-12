@@ -1,6 +1,5 @@
 import cloudinary from "cloudinary";
 import { Readable } from "stream";
-import client from "../db.js";
 import redisclient from "../redis.js";
 import { StreamChat } from "stream-chat";
 import { prisma } from "../lib/prisma.js";
