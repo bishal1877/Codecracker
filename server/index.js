@@ -39,7 +39,7 @@ app.use(
 ); 
   app.use(clerkMiddleware());
      app.use( async (req, res, next) => {
-       console.log(req.auth,' req', req.headers.cookie);
+       console.log(req.auth,' req', req.headers);
        const { isAuthenticated, userId } =  getAuth(req);
        console.log(isAuthenticated)
        if (!isAuthenticated) {

@@ -46,8 +46,9 @@ const Chat = ({ room }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            
+          "Sec-Fetch-Site":"same-site"
           },
+
         },
       );
       setProgress(progress + 10);
