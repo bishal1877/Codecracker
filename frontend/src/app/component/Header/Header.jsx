@@ -15,14 +15,23 @@ const Header = (props) => {
   else imna = "cpp";
   return (
     <div className={`${styles.heading}`}>
-      <Image
-        className={`${styles.icon}`}
-        src={`/${imna}.jpg`}
-        width={32}
-        height={32}
-        alt="dee"
-      ></Image>{" "}
-      <p style={{alignSelf:"center", textDecoration:"underline" ,textDecorationThickness:"1.2px"}} > {lang} Forum</p>
+      <div className={`${styles.headerContent}`}>
+        <div className={`${styles.headerLeft}`}>
+          <Image
+            className={`${styles.icon}`}
+            src={`/${imna}.jpg`}
+            width={40}
+            height={40}
+            alt="language icon"
+          />
+          <div className={`${styles.headerText}`}>
+            <h1 className={`${styles.title}`}>{lang} Forum</h1>
+            <p className={`${styles.subtitle}`}>
+              Ask & Answer Programming Questions
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

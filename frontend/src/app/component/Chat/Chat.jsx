@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import styles from "./chat.module.css";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { Context } from "../Context/Context";
 import Link from "next/link";
@@ -18,6 +18,7 @@ const Chat = ({ room }) => {
   const messagesEndRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const { user, isLoaded } = useUser();
+  const [hoveredMsg, setHoveredMsg] = useState(null);
   let [userdata, setuserdata] = useState({
     name: "",
     room: `${room}`,
@@ -46,9 +47,7 @@ const Chat = ({ room }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          "Sec-Fetch-Site":"same-site"
           },
-
         },
       );
       setProgress(progress + 10);
@@ -97,6 +96,7 @@ const Chat = ({ room }) => {
           params: { room: room },
           withCredentials: true,
         });
+        console.log(dat.data)
         setProgress(progress + 30);
         if (dat.data.success) {
           setmg((prev) => [...prev, ...dat.data.mess]);
@@ -134,6 +134,10 @@ const Chat = ({ room }) => {
     setuploaded(event.target.files[0]);
   };
 
+useEffect(()=>{
+console.log(hoveredMsg)
+},[hoveredMsg]);
+
   return (
     <div className={`${styles.chat}`}>
       <LoadingBar
@@ -142,56 +146,68 @@ const Chat = ({ room }) => {
         onLoaderFinished={() => setProgress(0)}
       />
 
-      <div className={`${styles.chatinner}`} ref={messagesEndRef}>
+      <div className={`${styles.questionsContainer}`} ref={messagesEndRef}>
         {msgs.length == 0 ? (
-          <div>Loading messages...</div>
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>❓</div>
+            <h3>No questions yet</h3>
+            <p>Be the first to ask a question!</p>
+          </div>
         ) : (
           msgs.map((item, ind) => {
+            const isYourQuestion = item.name === myname;
             return (
-              <div
+              <Link
                 key={ind}
+                href={`/chat/reply?msgid=${item.id}`}
+                className={styles.questionCard}
+                onMouseEnter={() => setHoveredMsg(item.id)}
+                onMouseLeave={() => setHoveredMsg(null)}
                 style={{
-                  display: "flex",
-                  justifyContent: item.name === myname ? "end" : "start",
+                  backgroundColor:
+                    item.id == hoveredMsg ? "#e5f3fa" : "transparent",
                 }}
               >
-                <div
-                  className={`${styles.chatcompo}`}
-                  style={{
-                    backgroundColor: item.name === myname ? "#d9fdd3" : "white",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: "5px",
-                    }}
-                  >
-                    {item.name != myname ? (
-                      <Image
-                        width={19}
-                        sizes="(max-height: 8px)"
-                        height={5}
-                        className={`${styles.imag}`}
-                        alt="dp"
-                        src={item.url != null ? `${item.url}` : "/dp.png"}
-                        objectFit="cover"
-                      ></Image>
-                    ) : (
-                      <></>
-                    )}
-                    {item.name != myname ? (
-                      <div style={{ color: "green" }}>{`~${item.name}`}</div>
-                    ) : (
-                      <></>
-                    )}
+                {console.log(item.id, "nhur")}
+                <div className={styles.questionHeader}>
+                  <div className={styles.authorSection}>
+                    <Image
+                      width={40}
+                      height={40}
+                      className={styles.authorAvatar}
+                      alt="user avatar"
+                      src={item.url != null ? `${item.url}` : "/dp.png"}
+                      objectFit="cover"
+                    />
+                    <div className={styles.authorInfo}>
+                      <div className={styles.authorName}>
+                        {item.name}
+                        {isYourQuestion && (
+                          <span className={styles.badge}>You</span>
+                        )}
+                      </div>
+                      <div className={styles.timestamp}>
+                        Asked at {new Date(item.time).toLocaleString()}
+                      </div>
+                    </div>
                   </div>
-                  <Link href={`/chat/reply?msgid=${item.id}`}>
-                    {`${item.msg.substring(0, 120)}`}
-                  </Link>
+                  {hoveredMsg === item.id && (
+                    <div className={styles.stats}>
+                      <span className={styles.stat}>👁️ 234</span>
+                      <span className={styles.stat}>💬 12</span>
+                    </div>
+                  )}
                 </div>
-              </div>
+
+                <div className={styles.questionContent}>
+                  <h3 className={styles.questionTitle}>
+                    {item.msg.substring(0, 40)}
+                  </h3>
+                  <p className={styles.questionPreview}>
+                    {item.msg.substring(0, 250)}
+                  </p>
+                </div>
+              </Link>
             );
           })
         )}
