@@ -6,8 +6,10 @@ import Reply from "@/app/component/Reply/Reply";
 import { toast } from "react-toastify";
 import Input from "@/app/component/Input/Input";
 import { Context } from "../Context/Context";
+import Gemini from "../Gemini/Gemini";
 
 const Replycontainer = ({ search }) => {
+  let [showai, setshowai] = useState(0);
   const callback = (obj) => {
     if (obj.success) toast.success(obj.mess);
     else toast.error(obj.mess || obj.message);
@@ -57,14 +59,17 @@ const Replycontainer = ({ search }) => {
   };
 
   const callclick = () => {
-  let genmsg = `Click here to join the call with callid=${search}${Date.now()}`;
+    let genmsg = `Click here to join the call with callid=${search}${Date.now()}`;
     settext(genmsg);
   };
 
   return (
     <div className={`${styles.replycont}`}>
+      {showai > 0 && (
+        <Gemini onClose={() => setshowai(0)}/>
+      )}
       <div className={`${styles.msgrep}`} ref={messagesEndRef}>
-        <Msg msgid={search} callclick={callclick} />
+        <Msg msgid={search} callclick={callclick} setshowai={setshowai} />
         <Reply msgid={search} reply={reply} setreply={setreply} />
       </div>
       <Input

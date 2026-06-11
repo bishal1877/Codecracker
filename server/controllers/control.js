@@ -3,6 +3,7 @@ import { Readable } from "stream";
 import redisclient from "../redis.js";
 import { StreamChat } from "stream-chat";
 import { prisma } from "../lib/prisma.js";
+import { GoogleGenAI } from "@google/genai";
 
 export const getmsg = async (req, res) => {
   try {
@@ -136,4 +137,27 @@ console.log(userid)
   } catch (error) {
     res.status(404).json({msg:`${error.message}`});
   } 
+}
+
+
+export const airesp=async(req,res)=>{
+
+     const ai = new GoogleGenAI({
+       apiKey: `${process.env.AI_KEY}`,
+     });
+
+try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: `${req.body.prompt}`,
+      });
+      if (response.status)
+        res.status(503).send({ success: true, msg: response.text });
+      res.status(200).send({ success: true, msg: response.text });  
+} catch (error) {
+    console.log("error aaya h",error);
+    if(error.ApiError.message)
+          res.send({ success: false, msg: error.ApiError.message }); 
+    res.send({ success: false, msg: error.message });  
+} 
 }

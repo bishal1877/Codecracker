@@ -7,6 +7,10 @@ const nextConfig = {
       new URL("https://res.cloudinary.com/**"),
     ],
   },
+   allowedDevOrigins: [
+    "local-origin.dev",
+    "*.local-origin.dev",
+    "192.168.43.54",
+  ], 
 };
-
-export default nextConfig;
+export default nextConfig;  

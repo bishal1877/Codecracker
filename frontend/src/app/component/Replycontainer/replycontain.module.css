@@ -1,29 +1,30 @@
-
-.replycont
-{
-       display: flex;
-    flex-direction: column ;
-justify-content: space-between;
-                width: 100%;
-            background-color: white;
-            height: 100%;
-            
-    border: 1px solid black;
-    border-radius: 0px 0px 8px 8px;
-    word-wrap: break-word;
+.replycont {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  background-color: white;
+  height: 100%;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 0px 0px 8px 8px;
+  word-wrap: break-word;
 }
-.msgrep
-{
-   
-    overflow: scroll;
+.msgrep {
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
-.msg
-{
-place-self: start;
-
+.msg {
+  place-self: start;
 }
-.msgrep::-webkit-scrollbar
-{
-    display: none;
+.msgrep::-webkit-scrollbar {
+  width: 8px;
+}
+.msgrep::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+.msgrep::-webkit-scrollbar-track {
+  background: #f5f7fa;
 }

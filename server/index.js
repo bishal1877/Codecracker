@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
@@ -10,46 +10,49 @@ import {
   givemsg,
   givereply,
   gettoken,
+  airesp
 } from "./controllers/control.js";
 import cors from "cors";
 import { prisma } from "./lib/prisma.js";
 import cloudinary from "cloudinary";
 import redisclient from "./redis.js";
-const app = express();
-// const session = require("express-session");
-dotenv.config();
-app.use(express.json());
-// app.use(
-//   session({
-//     secret: "your-secret",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       sameSite: "none",
-//       secure: process.env.NODE_ENV === "production", // true for HTTPS
-//     },
-//   }),
-// );
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://codecracker-liard.vercel.app"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-); 
-  app.use(clerkMiddleware());
-     app.use( async (req, res, next) => {
-       console.log(req.auth,' req', req.headers);
-       const { isAuthenticated, userId } =  getAuth(req);
-       console.log(isAuthenticated)
-       if (!isAuthenticated) {
-         return res.status(401).json({ msg: "User not authenticated" });
-       }
-         const user = await clerkClient.users.getUser(userId)
-         next();
-     }); 
-const httpServer = createServer(app);
-const storage = multer.memoryStorage();
+  const app = express();
+  // const session = require("express-session");
+  dotenv.config();
+  app.use(express.json());
+  // app.use(
+  //   session({
+  //     secret: "your-secret",
+  //     resave: false,
+  //     saveUninitialized: true,
+  //     cookie: {
+  //       sameSite: "none",
+  //       secure: process.env.NODE_ENV === "production", // true for HTTPS
+  //     },
+  //   }),
+  // );
+  app.use(
+    cors({
+      origin: [
+        "http://localhost:3000",
+        "https://codecracker-liard.vercel.app",
+      ],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }),
+  ); 
+     app.use(clerkMiddleware());
+       app.use( async (req, res, next) => {
+         const { isAuthenticated, userId } =  getAuth(req);
+         console.log(isAuthenticated)
+         if (!isAuthenticated) {
+           return res.status(401).json({ msg: "User not authenticated" });
+         }
+           const user = await clerkClient.users.getUser(userId)
+           next();
+       }); 
+  const httpServer = createServer(app);
+  const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 cloudinary.v2.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -78,9 +81,8 @@ io.on("connection", (socket) => {
         qimg:qimg
       },
     });
-    console.log(user,' bhej diye');
-    await redisclient.del(room); // Invalidate the room messages cache
-    io.to(room).emit("message", { name: naam, msg: text });
+    await redisclient.del(room); 
+    io.to(room).emit("message", { name: naam, msg: text ,time:new Date(),id:user.id});
   });
 
   socket.on("joinforreply", ({ msgid }) => {
@@ -124,9 +126,8 @@ app.post("/upload", upload.single("uploadedfile"), handlup);
 app.get("/reply", givereply);
 app.get("/token", gettoken);
 
-
-
-
+app.post("/airesponse", airesp);
+ 
 httpServer.listen(4000, () => {
   console.log("server started ho gya ");
 });

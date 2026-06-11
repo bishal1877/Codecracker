@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
+import styles from "./msg.module.css";
 
-
-const Msg = ({ msgid ,callclick}) => {
+const Msg = ({ msgid ,callclick,setshowai}) => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -74,7 +74,7 @@ const Msg = ({ msgid ,callclick}) => {
             justifyContent: "space-between",
           }}
         >
-          <div style={{display:"flex"}}>
+          <div style={{ display: "flex" }}>
             <Image
               src={message.url != null ? `${message.url}` : "/dp.png"}
               alt="User avatar"
@@ -84,14 +84,28 @@ const Msg = ({ msgid ,callclick}) => {
             />
             ~{message.name}
           </div>
-          <Image
-            src="/video-button.png"
-            alt="vb"
-            width={40}
-            height={30}
-            onClick={callclick}
-            style={{cursor:"pointer",width:"25px",height:"30px"}}
-          ></Image>
+          <div className={`${styles.gemini}`}>
+            <div className={`${styles.gimage}`}  onClick={()=>setshowai((prev)=>1-prev)} >
+              <Image
+                src="/gemini.jpg"
+                alt="vb"
+                width={20}
+                height={30}
+                className={`${styles.gimg}`}
+              />
+              <p>Ask AI</p>
+            </div>
+            <div className={`${styles.gimage}`} onClick={callclick}>
+              <Image
+                src="/call.png"
+                alt="vb"
+                width={20}
+                height={30}
+                className={`${styles.gimg}`}
+              />
+              <p>Call</p>
+            </div>
+          </div>
         </div>
         {message.qimg && (
           <div style={{ marginTop: "10px", width: "100%" }}>

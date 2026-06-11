@@ -1,0 +1,144 @@
+.aiplace {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40vw;
+  overflow: auto;
+  resize: horizontal;
+  direction: rtl;
+  background: linear-gradient(135deg, #ffffff 0%, #f0faf8 100%);
+  padding: 16px;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -4px 0 16px rgba(31, 122, 107, 0.12);
+  border-left: 3px solid #1f7a6b;
+  max-width: 80vw;
+}
+
+.aiplace::-webkit-scrollbar
+{
+  display: none;
+}
+
+.aiPanel {
+  direction: ltr;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1f7a6b;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #1f7a6b;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: rgba(31, 122, 107, 0.1);
+  color: #145e52;
+}
+
+.aiHeader p {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: #558e7b;
+}
+
+.aiForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiTextarea {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  border: 1px solid #558e7b;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.95rem;
+  background: #f9fdfa;
+}
+
+.aiButton {
+  align-self: flex-end;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1f7a6b;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.aiButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #8c1717;
+  background: #ffe5e5;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 80%;
+}
+
+.historyItem {
+  background: #eef5f2;
+  padding: 12px;
+  border-radius: 10px;
+  direction: ltr;
+}
+
+.historyPrompt,
+.historyAnswer {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.historyPrompt {
+  font-size: 0.95rem;
+}
+
+.historyAnswer {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: #10382b;
+}
+
+.emptyState {
+  color: #375a50;
+  font-size: 0.95rem;
+}

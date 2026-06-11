@@ -1,0 +1,31 @@
+.gemini
+{
+    display: flex;
+   gap: 10px; 
+}
+.gimage
+{
+    color: rgb(43, 41, 41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+   cursor: pointer;
+     border-width: 1px;
+    border-radius: 100px;
+    padding: 1.6px;
+padding-right: 1.9px    ;
+}
+.gimage:hover
+{
+scale: 1.05;
+}
+.gimage:active
+{
+scale: 1;
+}
+   .gimg
+   {
+    cursor: pointer; width: 27px; height: 24px;
+border-radius: 100px;   
+}
