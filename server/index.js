@@ -41,16 +41,16 @@ import redisclient from "./redis.js";
       allowedHeaders: ["Content-Type", "Authorization"],
     }),
   ); 
-     app.use(clerkMiddleware());
-       app.use( async (req, res, next) => {
-         const { isAuthenticated, userId } =  getAuth(req);
-         console.log(isAuthenticated)
-         if (!isAuthenticated) {
-           return res.status(401).json({ msg: "User not authenticated" });
-         }
-           const user = await clerkClient.users.getUser(userId)
-           next();
-       }); 
+    //  app.use(clerkMiddleware());
+    //    app.use( async (req, res, next) => {
+    //      const { isAuthenticated, userId } =  getAuth(req);
+    //      console.log(isAuthenticated)
+    //      if (!isAuthenticated) {
+    //        return res.status(401).json({ msg: "User not authenticated" });
+    //      }
+    //        const user = await clerkClient.users.getUser(userId)
+    //        next();
+    //    }); 
   const httpServer = createServer(app);
   const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
